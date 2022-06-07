@@ -1,0 +1,62 @@
+# #####################################################
+#
+# Name file: sitefodi-git.sh
+# Made by: 
+#    - Juan Sebastian Reyes Leyton
+#
+# Version: 1.4
+# Branch: Master
+#
+# #######################################################
+
+INST=$1
+ARGS=${@:2}
+
+options () {
+    echo -e " COMMANDS      \t ARGUMENTS        \t DESCRIPTION "
+    echo -e " add-tag       \t                  \t Push tag to git"
+    echo -e " all           \t branch           \t Create the commit and push to branch defined"
+    echo -e "               \t files or '.'     "
+    echo -e " commit        \t files or '.'     \t Create a git commit"
+    echo -e " create-tag    \t tag-name         \t Create an annotated tag"
+    echo -e "               \t message          "
+    echo -e " push          \t branch           \t Push to git"
+}
+
+commit () {
+    git add $@
+    git status
+    git commit
+}
+
+tag () {
+    git tag -a $1 -m $2
+}
+
+upload () {
+    git push -u origin $1
+}
+
+all () {
+    commit ${@:2}
+    upload $1
+}
+
+main () {
+    echo $ARGS
+    if [[ "$INST" == "commit" ]]; then
+        commit $ARGS
+    elif [[ "$INST" == "create-tag" ]]; then
+        tag $ARGS
+    elif [[ "$INST" == "push" ]]; then
+        upload $ARGS
+    elif [[ "$INST" == "add-tag" ]]; then
+        upload --tags
+    elif [[ "$INST" == "all" ]]; then
+        all $ARGS
+    else
+        options
+    fi
+}
+
+main 

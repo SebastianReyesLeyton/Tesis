@@ -1,0 +1,40 @@
+# #####################################################
+#
+# Name file: app.sh
+# Made by: 
+#    - Juan Sebastian Reyes Leyton
+#
+# Version: 1.0
+# Branch: Master
+#
+# #######################################################
+
+INST=$1
+ARGS=$2
+
+options () {
+    echo -e " COMMANDS \t ARGUMENTS \t DESCRIPTION "
+    echo -e " start    \t           \t Deploy the project"
+    echo -e " destroy  \t           \t Destroy the project"
+}
+
+start () {
+    echo "Start the system"
+}
+
+destroy () {
+    echo "Destroy the system"
+}
+
+main () {
+    
+    if [[ "$INST" == "start" ]]; then
+        start
+    elif [[ "$INST" == "destroy" ]]; then
+        destroy
+    else
+        options
+    fi
+}
+
+main
