@@ -4,7 +4,7 @@
 # Made by: 
 #    - Juan Sebastian Reyes Leyton
 #
-# Version: 1.0
+# Version: 1.7
 # Branch: Master
 #
 # #######################################################
@@ -13,9 +13,12 @@ INST=$1
 ARGS=$2
 
 options () {
-    echo -e " COMMANDS \t ARGUMENTS \t DESCRIPTION "
-    echo -e " start    \t           \t Deploy the project"
-    echo -e " destroy  \t           \t Destroy the project"
+    echo -e " COMMANDS  \t ARGUMENTS         \t DESCRIPTION "
+    echo -e " start     \t                   \t Deploy the project"
+    echo -e " destroy   \t                   \t Destroy the project"
+    echo -e " status    \t                   \t Show the project services status"
+    echo -e " connect   \t container name    \t Connect to specific server"
+    echo -e " logs      \t container name    \t Show the server logs"
 }
 
 start () {
@@ -36,12 +39,33 @@ destroy () {
     popd
 }
 
+status () {
+    echo "Services status:"
+    sudo docker ps -a
+}
+
+connect () {
+    echo "Connect to server $1:"
+    sudo docker exec -it $1 /bin/bash
+}
+
+logs () {
+    echo "Server $1 logs:"
+    sudo docker logs $1 -f
+}
+
 main () {
     
     if [[ "$INST" == "start" ]]; then
         start
     elif [[ "$INST" == "destroy" ]]; then
         destroy
+    elif [[ "$INST" == "status" ]]; then
+        status
+    elif [[ "$INST" == "connect" ]]; then
+        connect $ARGS
+    elif [[ "$INST" == "logs" ]]; then
+        logs $ARGS
     else
         options
     fi
