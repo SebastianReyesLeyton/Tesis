@@ -74,7 +74,7 @@ CREATE TABLE cards_answer_table (
     idQuestion  INTEGER NOT NULL,
     results     JSON NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (id) REFERENCES answer_table,
+    FOREIGN KEY (id) REFERENCES answer_table(id),
     FOREIGN KEY (idQuestion) REFERENCES sitefodi_tests.cards_question_table(id)
 
 );
@@ -83,10 +83,14 @@ CREATE TABLE cards_answer_table (
 
 CREATE TABLE words_answer_table (
 
-    id          INTEGER AUTO_INCREMENT,
+    id          INTEGER,
+    idQuestion  INTEGER NOT NULL,
+    results     JSON NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (id) REFERENCES answer_table(id),
+    FOREIGN KEY (idQuestion) REFERENCES sitefodi_tests.words_question_table(id)
 
-
-)
+);
 
 -- -------------------------------------------------------- --
 --                DATABASE DEFAULT VALUES                   --
@@ -94,7 +98,7 @@ CREATE TABLE words_answer_table (
 
 -- Answer types
 
-INSERT INTO answer_table (id, atype) VALUES 
+INSERT INTO answer_type_table (id, atype) VALUES 
     ( 1, 'Carta' ),
     ( 2, 'Cartas' ),
     ( 3, 'Palabras' );

@@ -143,7 +143,7 @@ CREATE TABLE test_questions_table (
     FOREIGN KEY (idTest) REFERENCES test_table(id),
     FOREIGN KEY (idQuestion) REFERENCES question_table(id)
 
-);
+) ENGINE=MyISAM;
 
 -- -------------------------------------------------------- --
 --                DATABASE DEFAULT VALUES                   --
