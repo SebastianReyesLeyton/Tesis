@@ -65,12 +65,12 @@ CREATE TABLE user_table (
     fullname    VARCHAR(255) NOT NULL,
     email       VARCHAR(100) NOT NULL UNIQUE,
     passcode    TEXT NOT NULL,
-    usertype    VARCHAR(10) NOT NULL,
+    rol         VARCHAR(10) NOT NULL,
     doctype     INTEGER NOT NULL,
     docnum      VARCHAR(20) NOT NULL UNIQUE,
     isActive    TINYINT(1) DEFAULT 1,
     PRIMARY KEY (id),
-    FOREIGN KEY (usertype) REFERENCES rol_table(rol),
+    FOREIGN KEY (rol) REFERENCES rol_table(rol),
     FOREIGN KEY (doctype) REFERENCES document_type(id)
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -81,8 +81,8 @@ CREATE TABLE patient_table (
 
     id          INTEGER, 
     gender      VARCHAR(30) NOT NULL,
-    leftHAID    VARCHAR(50) DEFAULT '',
-    rightHAID   VARCHAR(50) DEFAULT '',
+    leftHAID    VARCHAR(255) NOT NULL DEFAULT '',
+    rightHAID   VARCHAR(255) NOT NULL DEFAULT '',
     dateofBirth DATE CHECK (dateofBirth < DATE(NOW())),
     PRIMARY KEY (id),
     FOREIGN KEY (id) REFERENCES user_table(id),
@@ -97,7 +97,7 @@ CREATE TABLE relation_therapist_patient_table (
     id          INTEGER AUTO_INCREMENT,
     idTherapist INTEGER NOT NULL,
     idPatient   INTEGER NOT NULL,
-    isActive    TINYINT(1) DEFAULT 1,
+    isActive    TINYINT(1) NOT NULL DEFAULT 1,
     PRIMARY KEY (id),
     FOREIGN KEY (idTherapist) REFERENCES user_table(id),
     FOREIGN KEY (idPatient) REFERENCES patient_table(id)

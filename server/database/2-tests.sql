@@ -2,7 +2,7 @@
 -- 
 -- Name: 2-tests.sql
 -- Author: Juan Sebastian Reyes Leyton (sebas.reyes2002@hotmail.com)
--- Version: 2.0
+-- Version: 2.1
 -- Description: Build a database with test tables needed by project
 -- 
 -- -------------------------------------------------------- --
@@ -29,7 +29,7 @@ FLUSH PRIVILEGES;
 
 USE sitefodi_tests;
 
--- images table
+-- Images table
 
 CREATE TABLE images_table (
 
@@ -39,29 +39,40 @@ CREATE TABLE images_table (
     
 );
 
+-- Question type table
+
+CREATE TABLE question_type_table (
+
+    id              INTEGER AUTO_INCREMENT,
+    qtype           VARCHAR(255) NOT NULL,
+    descriptionP    TEXT NOT NULL,
+    PRIMARY KEY (id)
+
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- Question table
 
 CREATE TABLE question_table (
 
-    id          INTEGER AUTO_INCREMENT,
-    qtype       VARCHAR(255) NOT NULL,
-    descriptionP TEXT NOT NULL,
-    PRIMARY KEY (id)
+    id      INTEGER AUTO_INCREMENT,
+    idtype  INTEGER NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (idtype) REFERENCES question_type_table(id)
 
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+);
 
 -- Card question table 
 
 CREATE TABLE card_question_table (
 
     id              INTEGER,
-    therapistTitle  VARCHAR(255) NOT NULL DEFAULT 'Pregunta tipo Ficha',
+    therapistTitle  VARCHAR(255) NOT NULL DEFAULT 'Pregunta tipo carta',
     patientTitle    VARCHAR(255) NOT NULL DEFAULT 'Sigue las instrucciones del terapeuta',
     cardnameT       VARCHAR(80) NOT NULL,
     cardnameP       VARCHAR(80) NOT NULL,
     img             INTEGER NOT NULL,
-    yesValue        INTEGER DEFAULT 1,
-    noValue         INTEGER DEFAULT 0,
+    yesValue        INTEGER NOT NULL DEFAULT 1,
+    noValue         INTEGER NOT NULL DEFAULT 0,
     PRIMARY KEY (id),
     FOREIGN KEY (id) REFERENCES question_table(id),
     FOREIGN KEY (img) REFERENCES images_table(id)
@@ -73,10 +84,11 @@ CREATE TABLE card_question_table (
 CREATE TABLE words_question_table (
 
     id              INTEGER,
-    pDescription    VARCHAR(255) DEFAULT '',
+    pName           VARCHAR(255) NOT NULL DEFAULT 'Pregunta tipo palabras', 
+    pDescription    VARCHAR(255) NOT NULL DEFAULT 'Repite la palabra que el terapeuta te dirá',
     words           JSON NOT NULL,
-    yesValue        INTEGER DEFAULT 1,
-    noValue         INTEGER DEFAULT 0,
+    yesValue        INTEGER NOT NULL DEFAULT 1,
+    noValue         INTEGER NOT NULL DEFAULT 0,
     PRIMARY KEY (id),
     FOREIGN KEY (id) REFERENCES question_table(id)
 
@@ -87,25 +99,51 @@ CREATE TABLE words_question_table (
 CREATE TABLE cards_question_table (
 
     id              INTEGER,
+    pName           VARCHAR(255) NOT NULL DEFAULT 'Pregunta tipo cartas',
     rounds          INTEGER NOT NULL DEFAULT 1 CHECK( rounds > 0 ),
-    correctValue    INTEGER DEFAULT 1,
-    wrongValue      INTEGER DEFAULT 0,
+    correctValue    INTEGER NOT NULL DEFAULT 1,
+    wrongValue      INTEGER NOT NULL DEFAULT 0,
     PRIMARY KEY (id),
     FOREIGN KEY (id) REFERENCES question_table(id)
 
 );
 
--- cards table
+-- Cards table
 
 CREATE TABLE cards_table (
 
-    id      INTEGER,
-    img     INTEGER NOT NULL,
-    word    VARCHAR(100) DEFAULT '',
+    id          INTEGER AUTO_INCREMENT,
+    idQuestion  INTEGER NOT NULL,
+    img         INTEGER NOT NULL,
+    word        VARCHAR(100) NOT NULL DEFAULT '',
     PRIMARY KEY (id),
-    FOREIGN KEY (img) REFERENCES images_table(id)
+    FOREIGN KEY (img) REFERENCES images_table(id),
+    FOREIGN KEY (idQuestion) REFERENCES cards_question_table(id)
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- Test table
+
+CREATE TABLE test_table (
+
+    id      INTEGER AUTO_INCREMENT,
+    tName   VARCHAR(255) NOT NULL UNIQUE,
+    PRIMARY KEY(id)
+
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- Questions test relation
+
+CREATE TABLE test_questions_table (
+
+    idTest          INTEGER,
+    idQuestion      INTEGER,
+    questionOrder   INTEGER AUTO_INCREMENT,
+    PRIMARY KEY (idTest, idQuestion, questionOrder),
+    FOREIGN KEY (idTest) REFERENCES test_table(id),
+    FOREIGN KEY (idQuestion) REFERENCES question_table(id)
+
+);
 
 -- -------------------------------------------------------- --
 --                DATABASE DEFAULT VALUES                   --
@@ -113,7 +151,7 @@ CREATE TABLE cards_table (
 
 -- Questions type
 
-INSERT INTO question_table (id, qtype, descriptionP) VALUES
+INSERT INTO question_type_table (id, qtype, descriptionP) VALUES
     ( 1, 'Carta', 'Esta pregunta muestra al paciente una carta con su nombre y el fonoaudiologo debe encargar de preguntar la palabra que describio' ),
     ( 2, 'Cartas', 'Al paciente se le presenta un conjunto de cartas y el tendrá que seleccionar la que el terapeuta le indique' ),
     ( 3, 'Palabras', 'Se le presenta al terapeuta un conjunto de palabras que deberá decirle al niño y este al repetirlas se le calificará si las dice bien o mal' );
