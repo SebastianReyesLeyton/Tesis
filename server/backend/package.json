@@ -1,0 +1,27 @@
+{
+  "name": "sitefodi-project",
+  "version": "1.0.0",
+  "description": "This is the backend of my project",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "NODE_OPTIONS='--es-module-specifier-resolution=node' nodemon src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SebastianReyesLeyton/Tesis.git"
+  },
+  "author": "Juan Sebastian Reyes Leyton <sebas.reyes2002@hotmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SebastianReyesLeyton/Tesis/issues"
+  },
+  "homepage": "https://github.com/SebastianReyesLeyton/Tesis#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "express-form-data": "^2.0.18",
+    "nodemon": "^2.0.16"
+  }
+}

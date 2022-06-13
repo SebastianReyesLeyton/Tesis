@@ -4,6 +4,24 @@ version: '3'
 # Define services of project
 services:
 
+  # Backend container
+  backend:
+    container_name: sitefodi-backend
+    build: ./backend
+    image: mmapi
+    ports:
+      - 4000:4000
+    env_file:
+      - ../.env/backend_conf
+      - ../.env/backend_keys
+      - ../.env/backend_databases
+    links:
+      - database
+    depends_on:
+      - database
+    volumes:
+      - ./backend/:/usr/src/app
+
   # Database container
   database:
     container_name: sitefodi-db
