@@ -44,11 +44,11 @@ CREATE TABLE answer_type_table (
 CREATE TABLE answer_table (
 
     id          INTEGER AUTO_INCREMENT,
-    idTheraphy  INTEGER NOT NULL,
+    idTherapy  INTEGER NOT NULL,
     idtype      INTEGER NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (idtype) REFERENCES answer_type_table(id),
-    FOREIGN KEY (idTheraphy) REFERENCES sitefodi_theraphy.theraphy_table(id)
+    FOREIGN KEY (idTherapy) REFERENCES sitefodi_therapy.therapy_table(id)
 
 );
 

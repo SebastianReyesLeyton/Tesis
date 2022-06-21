@@ -134,10 +134,10 @@ INSERT INTO gender_type (gender) VALUES
 -- Users
 
 INSERT INTO user_table ( id, fullname, email, passcode, rol, doctype, docnum ) VALUES 
-    ( 1, 'Juan Sebastian Reyes', 'sebas.reyes2002@hotmail.com', 'Epyphone01', 'supervisor', 1, '1006123571' ),
-    ( 2, 'Pepito Perez', 'juaninreyes2002@hotmail.com', 'Epyphone01', 'terapeuta', 1, '1112223334' ),
-    ( 3, 'Vanesa Loaiza', 'vane.loaiza@hotmail.com', 'vane0123', 'paciente', 3, '1006147589' ),
-    ( 4, 'Anonymus', 'juaninreyes2002@gmail.com', 'anonym', 'admin', 1, '1006123572' );
+    ( 1, 'Juan Sebastian Reyes', 'sebas.reyes2002@hotmail.com', 'rN8X76aGbS67FG0ZWq5YL91arfZffF0eCjI=', 'supervisor', 1, '1006123571' ),
+    ( 2, 'Pepito Perez', 'juaninreyes2002@hotmail.com', 'LmlQvShPQuv5U6GxTguTzGnHVWfLgmcCfmk=', 'terapeuta', 1, '1112223334' ),
+    ( 3, 'Vanesa Loaiza', 'vane.loaiza@hotmail.com', '0YHrKIj6nCKpEzMeaCLCgvjhYEZRH7/z', 'paciente', 3, '1006147589' ),
+    ( 4, 'Anonymus', 'juaninreyes2002@gmail.com', '5HBy3dzm//xDsxIv/tRAdiIn9x0TcK3j', 'admin', 1, '1006123572' );
 
 -- Patient
 
