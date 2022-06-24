@@ -1,6 +1,5 @@
-import app from './app';
+import app, { PORT, HOST } from './app';
 
-app.listen( 4000, '0.0.0.0', () => {
-    console.log('[+] Server status: Running.');
-    console.log('[+] Link: http://localhost:4000')
+app.listen( PORT, HOST, () => {
+    console.log(`\x1b[33m[+] Server status: Running. Link: http://localhost:${PORT} \x1b[0m`);
 } )

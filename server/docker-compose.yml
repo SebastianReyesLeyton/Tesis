@@ -15,6 +15,7 @@ services:
       - ../.env/backend_conf
       - ../.env/backend_keys
       - ../.env/backend_databases
+      - ../.env/backend_jwt
       - ../.env/mysql
     depends_on:
       - database
