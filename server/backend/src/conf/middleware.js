@@ -22,7 +22,9 @@ function build ( app ) {
     app.use(formData.union());
 
     // Accept remote requests
-    app.use(cors());
+    app.use(cors({
+        origin: '*'
+    }));
 
     console.log('\x1b[32m[+] Middleware status: Set up.\x1b[0m')
 

@@ -4,6 +4,24 @@ version: '3'
 # Define services of project
 services:
 
+  # Frontend container
+  frontend:
+    container_name: sitefodi-frontend
+    build: ./frontend
+    image: rsfront
+    ports:
+      - 3000:3000
+    env_file:
+      - ../.env/frontend_connections
+    links:
+      - backend
+    depends_on:
+      - backend
+      - database
+    volumes:
+      - ./frontend:/usr/src/app
+    command: ["npm", "start"]
+
   # Backend container
   backend:
     container_name: sitefodi-backend
