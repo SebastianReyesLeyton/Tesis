@@ -85,6 +85,10 @@ class UserController extends Controller {
     
                 }
             } else {
+                if (Boolean(response.message)) {
+                    response.error = response.message;
+                    delete response.message;
+                }
                 res.json(response);
             }
 

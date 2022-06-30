@@ -1,0 +1,44 @@
+.sidebar {
+    min-height: 100vh;
+}
+
+.sidebar .center {
+    padding-left: 0.8rem;
+}
+
+.sidebar .center ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar .center ul .option-group-title {
+    font-size: 0.6rem;
+    font-weight: bold;
+    color: #999;
+    margin-top: 0.95rem;
+    margin-bottom: 0.25rem;
+}
+
+.sidebar .center ul li {
+    display: flex;
+    align-items: center;
+    padding: 0.25rem;
+    cursor: pointer;
+}
+
+.sidebar .center ul li:hover {
+    background-color: rgb(186, 197, 248);
+}
+
+.sidebar .center ul li .icon {
+    font-size: 1.125rem;
+    color: #7451f8;
+}
+
+.sidebar .center ul li span {
+    font-size: 0.813rem;
+    font-weight: 600;
+    color: #888;
+    margin-left: 0.625rem;
+}
