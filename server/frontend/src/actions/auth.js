@@ -1,12 +1,12 @@
 import * as API from '../api/auth';
-import { authenticated, loginError } from '../reducers/auth';
+import { authenticated, loginError, closeSession  } from '../reducers/auth';
 
 export const login = (userData, navigate) => async (dispatch) => {
 
     try {
         const response = await API.loginRequest(userData);
         dispatch(authenticated(response.data));
-        navigate("/home");
+        navigate("/home", { replace: true });
     } catch (err) {
         switch (err.message) {
             case "Request failed with status code 400":
@@ -18,4 +18,38 @@ export const login = (userData, navigate) => async (dispatch) => {
         }
     }
 
+}
+
+export const logout = (navigate) => async (dispatch) => {
+
+    try {
+        let response = await API.logoutRequest();
+        
+        switch (response.data.message) {
+            case "tiene refresh token":
+                console.log('pase');
+                localStorage.setItem('token', response.data.accessToken);
+                dispatch(logout(navigate));
+                break;
+            default:
+                dispatch(closeSession());
+                navigate("/", { replace: true });
+                break;
+        }
+
+    } catch (err) {
+        
+        switch (err.message) {
+            case 'Request failed with status code 401':
+                if (err.response.data.error === 'token no valido' ) {
+                    dispatch(closeSession());
+                    navigate("/", { replace: true });
+                } else {
+                    console.log(err);
+                }
+                break;
+            default:
+                console.log(err);
+        }
+    }
 }

@@ -13,16 +13,18 @@ export const validateAccessToken = ( ) => {
 
     return async (req, res, next) => {
 
+        console.log(req.header(JWT_HEADER_NAME));
+
         // If not exists the header defined
         if (!req.header(JWT_HEADER_NAME)) {
-            res.statusCode = 400;
+            res.statusCode = 406;
             res.json({ error: 'no hay token' });
             return ;
         }
 
         // If not exists the header defined
         if (!req.header(JWT_USER_HEADER)) {
-            res.statusCode = 400;
+            res.statusCode = 406;
             res.json({ error: 'no se ha definido el usuario' });
             return ;
         }
@@ -32,7 +34,7 @@ export const validateAccessToken = ( ) => {
 
         // If token header is not defined
         if ( token[0] !== JWT_AUTHENTICATION_WORD ) {
-            res.statusCode = 401;
+            res.statusCode = 406;
             res.json({ error: 'token no valido' });
             return ;
         } 

@@ -89,6 +89,9 @@ class AuthController extends Controller {
                 user: req.header(JWT_USER_HEADER),
                 token: req.header(JWT_HEADER_NAME)
             };
+
+            console.log(req.header);
+
             let tokenData = req.tokenData;
 
             // Validations

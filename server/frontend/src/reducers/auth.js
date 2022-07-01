@@ -16,6 +16,9 @@ export const authSlice = createSlice({
         },
         closeSession: (state) => {
             state = {}
+            localStorage.removeItem('user');
+            localStorage.removeItem('token');
+            localStorage.removeItem('avatar');
             return state;
         }
     }

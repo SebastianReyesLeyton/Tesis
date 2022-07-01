@@ -1,4 +1,5 @@
-import { navbarOptions } from '../../../constants';
+import { navbarOptions } from "../../../constants";
+import Logo from "../../../img/logos/Logo3.png";
 import './sidebar.css';
 
 const Sidebar = (props) => {
@@ -19,7 +20,6 @@ const Sidebar = (props) => {
   	return (
 		<div className='sidebar'>
 			<div className='top'>
-				<span className="logo">Sitefodi</span>
 			</div>
 			<div className='center'>
 				<ul>
@@ -41,7 +41,7 @@ const Sidebar = (props) => {
 				</ul>
 			</div>
 			<div className='bottom'>
-				<span className='author' >@Made by: Juan Sebastian Reyes Leyton</span>
+				<span className='author' >Made by: Juan Sebastian Reyes Leyton</span>
 			</div>
 		</div>
   	)

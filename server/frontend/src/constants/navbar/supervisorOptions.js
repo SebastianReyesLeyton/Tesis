@@ -1,13 +1,11 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
     faUsersLine, 
     faHospitalUser, 
-    faUserGear, 
-    faUsersGear, 
     faClipboardList,
     faFilePen,
     faBoxArchive
-} from '@fortawesome/free-solid-svg-icons'
+} from '@fortawesome/free-solid-svg-icons';
 
 export const SupervisorOptions = {
     Terapeuta: [
@@ -18,16 +16,6 @@ export const SupervisorOptions = {
         {
             option: "Ver terapeutas",
             icon: <FontAwesomeIcon icon={faUsersLine} className="icon" />
-        }
-    ],
-    Supervisor: [
-        {
-            option: "Registrar",
-            icon: <FontAwesomeIcon icon={faUserGear} className="icon" />
-        },
-        {
-            option: "Ver",
-            icon: <FontAwesomeIcon icon={faUsersGear} className="icon" />
         }
     ],
     Pruebas: [

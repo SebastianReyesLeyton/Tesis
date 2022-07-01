@@ -6,7 +6,18 @@ export const loginRequest = (data) => axios.post(
     data,
     {
         headers: {
+            "Content-Type": "multipart/form-data"
+        }
+    }
+);
+
+export const logoutRequest = () => axios.get(
+    `${AUTH_BASE_URL}/logout`,
+    {
+        headers: {
             "Content-Type": "multipart/form-data",
+            "x-user": JSON.parse(localStorage.getItem("user")).id,
+            "x-access-token": localStorage.getItem("token")
         }
     }
 );
