@@ -3,14 +3,13 @@ import { useState, forwardRef, useImperativeHandle, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
     faXmark,
-    faCircleXmark
-} from '@fortawesome/free-solid-svg-icons';
-
+    faCircleCheck
+} from '@fortawesome/free-solid-svg-icons'
 
 
 import "./index.css";
 
-const Error = forwardRef((props, ref) => {
+const Success = forwardRef((props, ref) => {
     const [ show, setShow ] = useState(Boolean(props.children));
     const message = props.children[0].toUpperCase() + props.children.slice(1);
 
@@ -18,7 +17,7 @@ const Error = forwardRef((props, ref) => {
         hiddenAlert(bool) {
             setShow(bool);
         }
-    }))
+    }));
 
     useEffect(() => {
         setTimeout(() => {
@@ -30,18 +29,18 @@ const Error = forwardRef((props, ref) => {
         <Grow in={show} timeout={500}>
             <Alert
                 iconMapping={{
-                    error: <FontAwesomeIcon icon={faCircleXmark} className="error-left-icon"/>
+                    success: <FontAwesomeIcon icon={faCircleCheck} className="success-left-icon"/>
                 }}
                 action={
-                    <FontAwesomeIcon className="error-icon-close" onClick={() => {
+                    <FontAwesomeIcon className="success-icon-close" onClick={() => {
                         setShow(false);
                     }} icon={faXmark} ></FontAwesomeIcon>
                 }
-                severity="error"
-                className="error-alert-message"
+                severity="success"
+                className="success-alert-message"
             >
-                <div className="error-content">
-                    <span className="error-title">Error: </span>
+                <div className="success-content">
+                    <span className="success-title">Éxito: </span>
                     <span>{message}</span>
                 </div>
             </Alert>
@@ -49,4 +48,4 @@ const Error = forwardRef((props, ref) => {
     )
 })
 
-export default Error;
+export default Success;

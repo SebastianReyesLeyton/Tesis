@@ -1,5 +1,6 @@
 import * as API from '../api/auth';
 import { authenticated, loginError, closeSession  } from '../reducers/auth';
+import { resetUserState } from '../reducers/user';
 
 export const login = (userData, navigate) => async (dispatch) => {
 
@@ -32,6 +33,7 @@ export const logout = (navigate) => async (dispatch) => {
                 break;
             default:
                 dispatch(closeSession());
+                dispatch(resetUserState());
                 navigate("/", { replace: true });
                 break;
         }
@@ -42,6 +44,7 @@ export const logout = (navigate) => async (dispatch) => {
             case 'Request failed with status code 401':
                 if (err.response.data.error === 'token no valido' ) {
                     dispatch(closeSession());
+                    dispatch(resetUserState());
                     navigate("/", { replace: true });
                 } else {
                     console.log(err);

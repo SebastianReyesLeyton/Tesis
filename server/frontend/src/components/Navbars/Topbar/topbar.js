@@ -32,7 +32,7 @@ const Topbar = (props) => {
         <div className="topbar">
             <section className="profile-container">
                 <div className="profile-avatar" >
-                    <img src={localStorage.getItem('avatar')} className="avatar" />
+                    <img alt="" src={localStorage.getItem('avatar')} className="avatar" />
                 </div>
                 <section className="profile-info">
                     <span className="name">{props.user.name}</span>

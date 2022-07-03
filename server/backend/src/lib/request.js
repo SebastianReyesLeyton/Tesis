@@ -47,7 +47,7 @@ export const validateAccessToken = ( ) => {
         try {
             // Is token valid?
             req.tokenData = jwt.verify( tokenBody, JWT_SECRET_PASSWORD );
-            console.log(req.tokenData.id !== integerValidator(req.header(JWT_USER_HEADER)));
+            
             if ( req.tokenData.id !== integerValidator(req.header(JWT_USER_HEADER)) ) throw new Error('access denied');
             else next();
 

@@ -7,7 +7,7 @@ const App = () => {
     
     const AuthUser = useSelector((state) => state.auth.user );
     let user = Boolean(AuthUser) || localStorage.length === 3;
-
+    
     return (
         <BrowserRouter>
             <Routes>

@@ -1,18 +1,21 @@
+import { useLocation } from "react-router-dom";
 import SupervisorRegisterComponent from "./supervisor/register";
 
 const RegisterComponent = (props) => {
 
-    switch (props.user.rol) {
-        case "admin":
-            switch (props.registerType) {
-                case "supervisor":
-                    return SupervisorRegisterComponent(props);
-                default:
-                    return ;
-            }
+    const location = useLocation();
+    let content;
+    switch (location.pathname) {
+        case "/register/supervisor":
+            if (props.user.rol === 'admin') content = <SupervisorRegisterComponent />;
+            break;
         default:
-            return ;
+            break;
     }
+
+    return (
+        content
+    )
 
 }
 
