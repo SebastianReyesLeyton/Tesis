@@ -84,7 +84,11 @@ class UserService extends Service {
         // If response is successful, compare the passwords and assign the result values depending on result
         if ( res.statusCode === SUCCESS ) {
 
-            if ( !this.cipher.compare( obj.password, ans.user.passcode )) {
+            if ( ans.user.isActive === 0 ) {
+                res.statusCode = BAD_REQUEST;
+                ans.message = 'cuenta deshabilitada';
+                delete ans.user;
+            } else if ( !this.cipher.compare( obj.password, ans.user.passcode )) {
                 res.statusCode = BAD_REQUEST;
                 ans.message = 'las contraseñas no coinciden';
                 delete ans.user;
@@ -95,10 +99,10 @@ class UserService extends Service {
         return ans;
     }
 
-    async registerUser ( res, obj ) {
+    async checkUserExists ( res, obj ) {
 
         // Define the default values
-        let ans = { message: 'registrado con éxito' };
+        let ans = { message: 'usuario no encontrado' };
         res.statusCode = SUCCESS;
 
         // Check that not exists an user with the same credentials
@@ -122,8 +126,24 @@ class UserService extends Service {
         // Reset status code response
         res.statusCode = SUCCESS;
 
+        return ans;
+    }
+
+    async registerUser ( res, obj ) {
+
+        // Define the default values
+        let ans = { message: 'registrado con éxito' };
+        res.statusCode = SUCCESS;
+
+        // Check if exists an user with the same data
+        let check = await this.checkUserExists( res, obj );
+        if ( res.statusCode != SUCCESS ) return check;
+
+        // Reset status code response
+        res.statusCode = SUCCESS;
+
         // Wait the response of repository
-        response = await this.repository.register(obj);
+        let response = await this.repository.register(obj);
 
         // The register was successful?
         if ( response.affectedRows === 1 ) { 

@@ -19,3 +19,11 @@ export const DTO_REGISTER_MYSQL = {
     passcode: String(),
     docnum: String()
 }
+
+export const DTO_UPDATE_SUPERVISOR_MYSQL = {
+    id: Number(),
+    fullname: String(),
+    email: String(),
+    passcode: String(),
+    docnum: String()
+}

@@ -6,21 +6,15 @@ class SupervisorRepository extends UserRepository {
     constructor () {
         super('supervisor');
     }
-
-    setData ( obj ) {
-        const ans = this.obj.query('UPDATE user_table SET\
-                                    fullname = ?, email = ?, passcode = ?,\
-                                    docnum = ?, WHERE id = ? and rol = ?',[
-                                        obj.fullname,
-                                        obj.email,
-                                        obj.passcode,
-                                        obj.docnum,
-                                        obj.id,
-                                        'supervisor'
-                                    ]);
-        return ans;
-    }
     
+    setData ( obj ) {
+        return super.setUserData( Object.assign(obj, { rol: 'supervisor' }));
+    }
+
+    setState ( obj ) {
+        return super.setState( Object.assign(obj, { rol: 'supervisor' }));
+    }
+
 }
 
 export default SupervisorRepository;

@@ -5,7 +5,6 @@ const emailValidator = ( email ) => {
 }
 
 const integerValidator = ( number ) => {
-    
     if ( isNaN(number) ) throw new Error('no es un número entero')
     else if ( typeof number == 'string' && number.split('.').length > 1 ) throw new Error('no es un número entero')
     return Number(number);

@@ -1,7 +1,7 @@
 import UTF8 from "utf8";
 import Controller from "../../../models/controller";
 import SupervisorService from "../service/supervisor";
-import { DTO_REGISTER } from "../models/supervisor/dto.in";
+import { DTO_REGISTER, DTO_UPDATE_SUPERVISOR } from "../models/supervisor/dto.in";
 import { docNumValidator, dtoValidator, emailValidator, integerValidator, passwordValidator } from "../../../lib/validator";
 import { DTO_SUPERVISOR_RESPONSE, DTO_SUPERVISORS_RESPONSE } from "../models/supervisor/dto.out";
 import { SUCCESS, BAD_REQUEST, FORBIDDEN } from "../../../lib/httpCodes"; 
@@ -23,7 +23,7 @@ class SupervisorController extends Controller {
             
             switch ( req.tokenData.rol ) {
                 case 'admin':
-                    if (res.statusCode === SUCCESS ) break;
+                    if ( res.statusCode === SUCCESS ) break;
                 default:
                     res.statusCode = FORBIDDEN;
                     res.json({ error: 'permisos denegados' });
@@ -42,7 +42,7 @@ class SupervisorController extends Controller {
             } catch (err) {
 
                 res.statusCode = BAD_REQUEST;
-                res.send({ error: err.message });
+                res.json( Boolean(err.message) ? { error: err.message } : { error: err.error } );
                 return ;
 
             }
@@ -52,14 +52,13 @@ class SupervisorController extends Controller {
 
             // Return the response according to statusCode result
             if ( res.statusCode === SUCCESS ) {
-                response.success = response.message;
-                delete response.message;
-                res.json(response)
+                response.success = response.message;                
             } else {
-                response.error = response.message;
-                delete response.message;
-                res.json(response);
+                response.error = response.message;           
             }
+
+            delete response.message;
+            res.json(response)
         }
     }
 
@@ -76,7 +75,7 @@ class SupervisorController extends Controller {
 
             } catch (err) {
                 res.statusCode = BAD_REQUEST;
-                res.send({ error: err.message });
+                res.json({ error: err.message });
                 return ;
             }
 
@@ -87,6 +86,10 @@ class SupervisorController extends Controller {
                     break;
                 case 'supervisor':
                     if ( res.statusCode === SUCCESS && response.user.id === req.tokenData.id ) break;
+                    else if ( res.statusCode === BAD_REQUEST ) {
+                        res.json( Boolean(response.message) ? { error: response.message } : response );
+                        return ;
+                    }
                 default:
                     res.statusCode = FORBIDDEN;
                     res.json({ error: 'permisos denegados' });
@@ -129,7 +132,7 @@ class SupervisorController extends Controller {
             
             switch ( req.tokenData.rol ) {
                 case 'admin':
-                    if (res.statusCode === SUCCESS ) break;
+                    if ( res.statusCode === SUCCESS ) break;
                 default:
                     res.statusCode = FORBIDDEN;
                     res.json({ error: 'permisos denegados' });
@@ -142,7 +145,7 @@ class SupervisorController extends Controller {
                 body.offset = integerValidator(body.offset);
             } catch (err) {
                 res.statusCode = BAD_REQUEST;
-                res.send({ error: err.message });
+                res.json({ error: err.message });
                 return ;
             }
 
@@ -170,6 +173,56 @@ class SupervisorController extends Controller {
             // Return the response
             res.json(response);
 
+        }
+    }
+
+    edit () {
+        return async ( req, res ) => {
+
+            // Get request body
+            let body = req.body;
+
+            // Doing the required validations
+            try {
+                dtoValidator( body, DTO_UPDATE_SUPERVISOR );
+                body.id = integerValidator( body.id );
+                emailValidator( body.email );
+                if ( body.newPassword !== '' ) passwordValidator( body.newPassword );
+                docNumValidator( body.docnum );
+            } catch (err) {
+                
+                res.statusCode = BAD_REQUEST;
+                res.json( Boolean(err.message) ? { error: err.message } : { error: err.error } );
+                return ;
+            }
+            
+            // Validating the permissions
+            let response = await this.service.id( res, { id: body.id, rol: 'supervisor' } );
+            switch ( req.tokenData.rol ) {
+                case 'admin':
+                    if ( res.statusCode === SUCCESS ) break;
+                case 'supervisor':
+                    if ( res.statusCode === SUCCESS && req.tokenData.id === response.user.id ) break;
+                    else if ( res.statusCode === BAD_REQUEST ) {
+                        res.json( Boolean(response.message) ? { error: response.message } : response );
+                        return ;
+                    }
+                default:
+                    res.statusCode = FORBIDDEN;
+                    res.json({ error: 'permisos denegados' });
+                    return;
+            }
+
+            // Wait the response of supervisor service
+            response = await this.service.edit( res, body, response.user );
+
+            res.json( Boolean(res.statusCode !== 200) ? { error: response.message } : { success: response.message } );
+        }
+    }
+
+    modifyState () {
+        return ( req, res ) => {
+            console.log('Esta');
         }
     }
 

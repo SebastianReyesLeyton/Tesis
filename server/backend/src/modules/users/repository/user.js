@@ -53,13 +53,28 @@ class UserRepository extends Repository {
     }
 
     setState ( { id, isActive, rol } ) {
-        const ans = this.obj.query('UPDATE user_table SET isActive = ? WHERE id = ? and rol = ?', [
+        const ans = this.db.query('UPDATE user_table SET isActive = ? WHERE id = ? and rol = ?', [
             isActive,
             id,
             rol
         ]);
         return ans;
     }
+
+    setUserData ( obj ) {
+        const ans = this.db.query('UPDATE user_table SET\
+                                    fullname = ?, email = ?, passcode = ?,\
+                                    docnum = ? WHERE id = ? and rol = ?',[
+                                        obj.fullname,
+                                        obj.email,
+                                        obj.passcode,
+                                        obj.docnum,
+                                        obj.id,
+                                        obj.rol
+                                    ]);
+        return ans;
+    }
+
 }
 
 

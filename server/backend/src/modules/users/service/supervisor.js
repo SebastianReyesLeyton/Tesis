@@ -1,8 +1,8 @@
 import UserService from "./user";
 import SupervisorRepository from "../repository/supervisor";
-import { DTO_REGISTER_MYSQL } from "../models/supervisor/dto.out";
+import { DTO_REGISTER_MYSQL, DTO_UPDATE_SUPERVISOR_MYSQL } from "../models/supervisor/dto.out";
 import { PasswordCipher } from "../../../lib/encrypt";
-import { SUCCESS, INTERNAL_ERROR } from "../../../lib/httpCodes";
+import { SUCCESS, INTERNAL_ERROR, BAD_REQUEST } from "../../../lib/httpCodes";
 
 class SupervisorService extends UserService {
 
@@ -57,6 +57,71 @@ class SupervisorService extends UserService {
 
         // Assign the users to response
         ans.users = response;
+
+        return ans;
+
+    }
+
+    async edit ( res, obj, user ) {
+
+        // Define the default values
+        let ans = { message: 'datos actualizados' };
+        res.statusCode = SUCCESS;
+
+        let response
+
+        if ( obj.email !== user.email ) {
+            // Check that not exists an user with the same credentials
+            response = await this.email( res, obj );
+                    
+            // If exists an user with the same email
+            if ( res.statusCode === SUCCESS ) {
+                res.statusCode = BAD_REQUEST;
+                return { message: "ya existe un usuario con ese correo" }
+            }
+        }
+
+        if ( obj.docnum !== user.docnum ) {
+            // Check that not exists an user with the same credentials
+            response = await this.docnum( res, obj );
+
+            // If exists an user with the same docnum
+            if ( res.statusCode === SUCCESS ) {
+                res.statusCode = BAD_REQUEST;
+                return { message: "ya existe un usuario con ese número de documento" }
+            }
+        }
+
+        // Reset status code response
+        res.statusCode = SUCCESS;
+
+        // Map the entry obj to  format
+        try {
+            this.mapper.map( obj, DTO_UPDATE_SUPERVISOR_MYSQL, (dto) => {
+
+                dto.fullname = dto.name;
+                dto.passcode = (dto.newPassword === '') ? user.passcode : this.cipher.encrypt(dto.newPassword);
+
+                delete dto.name;
+                delete dto.newPassword;
+
+                return dto;
+            } );
+
+        } catch (err) {
+            res.statusCode = INTERNAL_ERROR;
+            ans = err;
+            return ans;
+        }
+
+        // Wait the response of repository
+        response = await this.repository.setData(this.mapper.obj);
+
+        // If not modify a register
+        if ( response.affectedRows !== 1 ) {
+            res.statusCode = 400;
+            ans.message = "no se pudo actualizar el usuario";
+        }
 
         return ans;
 
