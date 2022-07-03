@@ -3,7 +3,7 @@ import UserService from '../service/user';
 import { DTO_LOGIN_RESPONSE } from '../models/user/dto.out';
 import { DTO_EMAIL_REQUEST, DTO_LOGIN_REQUEST } from '../models/user/dto.in';
 import { emailValidator, dtoValidator, passwordValidator } from '../../../lib/validator'; 
-
+import { SUCCESS, BAD_REQUEST, INTERNAL_ERROR } from "../../../lib/httpCodes";
 class UserController extends Controller {
 
     constructor () {
@@ -22,19 +22,13 @@ class UserController extends Controller {
                 emailValidator( body.email );
                 
             } catch (err) {
-                res.statusCode = 400;
+                res.statusCode = BAD_REQUEST;
                 res.send({ error: err.message });
                 return ;
             }
 
             let response = await this.service.email( res, body );
             res.json(response);
-        }
-    }
-
-    docnum () {
-        return async (req, res) => {
-            console.log('Soy yo 2');
         }
     }
 
@@ -53,7 +47,7 @@ class UserController extends Controller {
                 
             } catch (err) {
 
-                res.statusCode = 400;
+                res.statusCode = BAD_REQUEST;
                 res.send({ error: err.message });
                 return ;
 
@@ -62,7 +56,7 @@ class UserController extends Controller {
             // Wait the response of user service
             let response = await this.service.emailPassword(res, body);
 
-            if ( res.statusCode == 200 ) {
+            if ( res.statusCode == SUCCESS ) {
 
                 // Map user info to DTO_LOGIN_RESPONSE
                 try {
@@ -80,7 +74,7 @@ class UserController extends Controller {
     
                 } catch (err) {
                     
-                    res.statusCode = 500;
+                    res.statusCode = INTERNAL_ERROR;
                     res.json(err);
     
                 }

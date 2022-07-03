@@ -5,8 +5,9 @@ const emailValidator = ( email ) => {
 }
 
 const integerValidator = ( number ) => {
-
-    if ( isNaN(number) || number.split('.').length === 0 ) throw new Error('no es un número entero')
+    
+    if ( isNaN(number) ) throw new Error('no es un número entero')
+    else if ( typeof number == 'string' && number.split('.').length > 1 ) throw new Error('no es un número entero')
     return Number(number);
 }
 
@@ -19,6 +20,12 @@ const stringValidator = ( str ) => {
 const passwordValidator = ( password ) => {
 
     if ( password.length < 8 ) throw new Error("la contraseña debe ser mayor a 8 caracteres");
+
+}
+
+const docNumValidator = ( docnum ) => {
+    
+    if ( docnum.length > 20 ) throw new Error("el número de documento excede el máximo número de caracteres");
 
 }
 
@@ -42,21 +49,21 @@ const dtoValidator = ( dto, obj ) => {
     if ( match.length == objKeys.length && unmatched.length != 0 ) {
         throw {
             statusCode: 400,
-            message: 'el número de parámetros pasados es superior al solicitado'
+            error: 'el número de parámetros pasados es superior al solicitado'
         };
     } else if ( match.length != objKeys.length && unmatched.length != 0) {
         throw{
             statusCode: 400,
-            message: 'faltan parámetros y hay parámetros innecesarios'
+            error: 'faltan parámetros y hay parámetros innecesarios'
         };
     } else if ( match.length != objKeys.length ) {
         throw {
             statusCode: 400,
-            message: 'faltan parámetros'
+            error: 'faltan parámetros'
         };
     }
 }
 
-export { emailValidator, integerValidator, stringValidator, passwordValidator, dtoValidator };
+export { docNumValidator, dtoValidator,  emailValidator, integerValidator, stringValidator, passwordValidator, };
 
 // Regex: https://www.w3resource.com/javascript/form/email-validation.php

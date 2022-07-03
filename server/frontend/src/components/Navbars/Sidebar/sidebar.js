@@ -1,5 +1,7 @@
 import { navbarOptions } from "../../../constants";
-import Logo from "../../../img/logos/Logo3.png";
+
+import { Link } from "react-router-dom";
+
 import './sidebar.css';
 
 const Sidebar = (props) => {
@@ -30,8 +32,10 @@ const Sidebar = (props) => {
 								{
 									options[item].map((subitem) => (
 										<li key={subitem.option}> 
-											<i> { subitem.icon } </i>
-											<span>{subitem.option}</span>
+											<Link to={subitem.link}>
+												<i> { subitem.icon } </i>
+												<span>{subitem.option}</span>
+											</Link>
 										</li>
 									))
 								}

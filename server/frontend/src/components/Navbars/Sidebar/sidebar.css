@@ -59,6 +59,10 @@
     margin-left: 0.5rem;
 }
 
+.sidebar .center ul li a {
+    text-decoration: none;
+}
+
 .sidebar .center ul li .icon {
     font-size: 1.125rem;
     color: #219ebc;

@@ -4,43 +4,42 @@ import {
     faUsersGear,
     faHospitalUser,
     faUsersLine,
-    faUserTag,
-    faAtom
+    faUserTag
 } from '@fortawesome/free-solid-svg-icons';
 
 export const AdminOptions = {
     Supervisor: [
         {
             option: "Registrar",
-            icon: <FontAwesomeIcon icon={faUserGear} className="icon" />
+            icon: <FontAwesomeIcon icon={faUserGear} className="icon" />,
+            link: "/register/supervisor"
         },
         {
             option: "Ver/Editar",
-            icon: <FontAwesomeIcon icon={faUsersGear} className="icon" />
+            icon: <FontAwesomeIcon icon={faUsersGear} className="icon" />,
+            link: "/home"
         },
         {
             option: "Modificar estado",
-            icon: <FontAwesomeIcon icon={faUserTag} className="icon" />
+            icon: <FontAwesomeIcon icon={faUserTag} className="icon" />,
+            link: "/home"
         }
     ],
     Terapeuta: [
         {
             option: "Registrar",
-            icon: <FontAwesomeIcon icon={faHospitalUser} className="icon" />
+            icon: <FontAwesomeIcon icon={faHospitalUser} className="icon" />,
+            link: "/home"
         },
         {
             option: "Ver/Editar",
-            icon: <FontAwesomeIcon icon={faUsersLine} className="icon" />
+            icon: <FontAwesomeIcon icon={faUsersLine} className="icon" />,
+            link: "/home"
         },
         {
             option: "Modificar estado",
-            icon: <FontAwesomeIcon icon={faUserTag} className="icon" />
-        }
-    ],
-    Tokens: [
-        {
-            option: "Ver",
-            icon: <FontAwesomeIcon icon={faAtom} className="icon" />
+            icon: <FontAwesomeIcon icon={faUserTag} className="icon" />,
+            link: "/home"
         }
     ]
 }

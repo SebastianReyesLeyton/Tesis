@@ -8,23 +8,23 @@ import {
 } from "../conf/jwt";
 import jwt from "jsonwebtoken";
 import ResponseOBJ from "../models/request";
+import { integerValidator } from "./validator";
+import { UNAUTHORIZED, BAD_REQUEST } from "./httpCodes";
 
 export const validateAccessToken = ( ) => {
 
     return async (req, res, next) => {
 
-        console.log(req.header(JWT_HEADER_NAME));
-
         // If not exists the header defined
         if (!req.header(JWT_HEADER_NAME)) {
-            res.statusCode = 406;
+            res.statusCode = BAD_REQUEST;
             res.json({ error: 'no hay token' });
             return ;
         }
 
         // If not exists the header defined
         if (!req.header(JWT_USER_HEADER)) {
-            res.statusCode = 406;
+            res.statusCode = BAD_REQUEST;
             res.json({ error: 'no se ha definido el usuario' });
             return ;
         }
@@ -34,7 +34,7 @@ export const validateAccessToken = ( ) => {
 
         // If token header is not defined
         if ( token[0] !== JWT_AUTHENTICATION_WORD ) {
-            res.statusCode = 406;
+            res.statusCode = BAD_REQUEST;
             res.json({ error: 'token no valido' });
             return ;
         } 
@@ -47,7 +47,9 @@ export const validateAccessToken = ( ) => {
         try {
             // Is token valid?
             req.tokenData = jwt.verify( tokenBody, JWT_SECRET_PASSWORD );
-            next();
+            console.log(req.tokenData.id !== integerValidator(req.header(JWT_USER_HEADER)));
+            if ( req.tokenData.id !== integerValidator(req.header(JWT_USER_HEADER)) ) throw new Error('access denied');
+            else next();
 
         } catch (error) {
             
@@ -60,7 +62,7 @@ export const validateAccessToken = ( ) => {
                     };
 
                     let response = new ResponseOBJ();
-
+                    
                     // Wait the response of Auth module
                     await AuthController.getAccessToken()( { body }, response );
                     
@@ -73,6 +75,10 @@ export const validateAccessToken = ( ) => {
                         res.json({ error: 'token no valido' });
                     }
                     
+                    break;
+                case 'access denied':
+                    res.statusCode = UNAUTHORIZED;
+                    res.json({ error: 'inconsistencia en la petición' })
                     break;
                 default:
                     console.log(error);

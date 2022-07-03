@@ -13,6 +13,7 @@ import {
 } from "../../../conf/jwt";
 import { JWT_SECRET_PASSWORD } from "../../../conf/keys";
 import { DTO_TOKEN_CONTENT } from '../models/dto.in';
+import { SUCCESS, UNAUTHORIZED } from "../../../lib/httpCodes";
 
 class AuthService extends Service {
 
@@ -63,7 +64,7 @@ class AuthService extends Service {
 
         // Define the res.statusCode to obtained
         res.statusCode = response.statusCode;
-        if ( res.statusCode == 200 ) {
+        if ( res.statusCode == SUCCESS ) {
             response.data.token = await this.createToken(response.data.user);
         }
 
@@ -111,7 +112,7 @@ class AuthService extends Service {
 
         // Define the default response
         let ans = { message: 'tiene refresh token' };
-        res.statusCode = 200;
+        res.statusCode = SUCCESS;
 
         try {
 
@@ -147,7 +148,7 @@ class AuthService extends Service {
             }
             else {
                 ans.message = 'no existe refresh token';
-                res.statusCode = 401;
+                res.statusCode = UNAUTHORIZED;
             }
 
             return ans;
@@ -162,7 +163,7 @@ class AuthService extends Service {
 
         // Define the default values
         let ans = { message: 'eliminado' };
-        res.statusCode = 200;
+        res.statusCode = SUCCESS;
 
         obj.token = this.__extractRefreshToken(obj.token);
 

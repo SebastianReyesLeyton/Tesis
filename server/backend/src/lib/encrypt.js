@@ -5,7 +5,6 @@ class Cipher {
 
     constructor ( secret_password ) {
         this.cipher = cipher.createCipher(secret_password);
-        console.log('    [-] Cipher called.');
     }
 
     encrypt ( value ) {

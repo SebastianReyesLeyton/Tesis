@@ -27,7 +27,6 @@ export const logout = (navigate) => async (dispatch) => {
         
         switch (response.data.message) {
             case "tiene refresh token":
-                console.log('pase');
                 localStorage.setItem('token', response.data.accessToken);
                 dispatch(logout(navigate));
                 break;

@@ -1,8 +1,10 @@
 import util from 'util';
 import mysql from 'mysql';
 import sleep from './sleep';
+import { config } from 'process';
 
-class Database {
+let databases = {};
+class PrivateDatabase {
 
     constructor ( config ) {
         this.name = config.database;                // Database name
@@ -65,6 +67,22 @@ class Database {
     queryConf () {
         // Transform mysql queries to JavaScript promises
         this.pool.query = util.promisify(this.pool.query);
+    }
+}
+
+class Database {
+
+    constructor () {
+        throw new Error('Use Database.getInstance()');
+    }
+
+    static getInstance( conf ) {
+        
+        if ( !Boolean(databases[conf.database]) ) { 
+            databases[conf.database] = new PrivateDatabase(conf); 
+            databases[conf.database].initialization();
+        }
+        return databases[conf.database];
     }
 }
 

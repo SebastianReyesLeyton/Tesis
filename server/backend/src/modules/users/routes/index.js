@@ -1,13 +1,10 @@
 import { Router } from "express";
 import user from "./user";
+import supervisor from "./supervisor";
 
 const userRouter = new Router();
 
-const Logger = (req, res, next) => {
-    console.log(`[+] ${req.method} ${req.originalUrl}`); 
-    next();
-}
-
-userRouter.use(Logger, user);
+userRouter.use(user);
+userRouter.use('/supervisor', supervisor);
 
 export default userRouter;

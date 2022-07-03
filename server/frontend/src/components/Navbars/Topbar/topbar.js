@@ -28,7 +28,6 @@ const Topbar = (props) => {
         dispatch(logout(navigate));
     }
 
-
     return (
         <div className="topbar">
             <section className="profile-container">
@@ -42,14 +41,19 @@ const Topbar = (props) => {
                 <FontAwesomeIcon icon={faGear} className="icon" onClick={handleShow} />
                 <Collapse in={show} className="collapse-menu">
                     <ul>
-                        <li>
-                            <FontAwesomeIcon icon={faEye} className="icon" />
-                            <span>Ver perfil</span>
-                        </li>
-                        <li>
-                            <FontAwesomeIcon icon={faMarker} className="icon" />
-                            <span>Editar perfil</span>
-                        </li>
+                        {
+                            props.user.rol !== "admin" &&
+                            <>
+                                <li>
+                                    <FontAwesomeIcon icon={faEye} className="icon" />
+                                    <span>Ver perfil</span>
+                                </li>
+                                <li>
+                                    <FontAwesomeIcon icon={faMarker} className="icon" />
+                                    <span>Editar perfil</span>
+                                </li>
+                            </>
+                        }
                         <li onClick={handleLogout}>
                             <FontAwesomeIcon icon={faArrowRightFromBracket} className="icon" />
                             <span>Salir</span>

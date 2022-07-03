@@ -13,6 +13,7 @@ import {
 } from "../../../lib/validator";
 import ResponseOBJ from "../../../models/request";
 import { JWT_USER_HEADER, JWT_HEADER_NAME } from "../../../conf/jwt";
+import { UNAUTHORIZED, BAD_REQUEST, INTERNAL_ERROR } from "../../../lib/httpCodes";
 
 class AuthController extends Controller {
 
@@ -35,7 +36,7 @@ class AuthController extends Controller {
 
             } catch (err) {
                 
-                res.statusCode = 400;
+                res.statusCode = BAD_REQUEST;
                 res.send({ error: err.message });
                 return ;
 
@@ -56,7 +57,6 @@ class AuthController extends Controller {
 
             // Get body form
             let body = req.body
-            console.log(body);
 
             // Doing the required validations
             try {
@@ -66,7 +66,7 @@ class AuthController extends Controller {
 
             } catch (err) {
                 
-                res.statusCode = 400;
+                res.statusCode = BAD_REQUEST;
                 res.json( { error: err.message } )
                 return ;
 
@@ -90,8 +90,6 @@ class AuthController extends Controller {
                 token: req.header(JWT_HEADER_NAME)
             };
 
-            console.log(req.header);
-
             let tokenData = req.tokenData;
 
             // Validations
@@ -103,15 +101,15 @@ class AuthController extends Controller {
                 
                 switch (error.message) {
                     case 'access denied':
-                        res.statusCode = 401;
+                        res.statusCode = UNAUTHORIZED;
                         res.json({ error: 'inconsistencia en la petición' });
                         return ;
                     case 'no es un número entero':
-                        res.statusCode = 400;
+                        res.statusCode = BAD_REQUEST;
                         res.json({ error: 'el encabezado de usuario no tiene el tipo adecuado' });
                         return ;
                     default:
-                        res.statusCode = 500;
+                        res.statusCode = INTERNAL_ERROR;
                         res.json({ error: error.message });
                         return ;
                 }
