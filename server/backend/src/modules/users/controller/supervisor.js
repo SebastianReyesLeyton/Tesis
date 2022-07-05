@@ -2,9 +2,10 @@ import UTF8 from "utf8";
 import Controller from "../../../models/controller";
 import SupervisorService from "../service/supervisor";
 import { DTO_REGISTER, DTO_UPDATE_SUPERVISOR } from "../models/supervisor/dto.in";
-import { docNumValidator, dtoValidator, emailValidator, integerValidator, passwordValidator } from "../../../lib/validator";
+import { docNumValidator, dtoValidator, emailValidator, integerValidator, isActiveValidator, passwordValidator } from "../../../lib/validator";
 import { DTO_SUPERVISOR_RESPONSE, DTO_SUPERVISORS_RESPONSE } from "../models/supervisor/dto.out";
-import { SUCCESS, BAD_REQUEST, FORBIDDEN } from "../../../lib/httpCodes"; 
+import { SUCCESS, BAD_REQUEST, FORBIDDEN } from "../../../lib/httpCodes";
+import Permissions from "../../../lib/permissions"; 
 
 class SupervisorController extends Controller {
 
@@ -13,21 +14,20 @@ class SupervisorController extends Controller {
     }
 
     register () {
+
+        const permission = Permissions('admin');
+
         return async ( req, res ) => {
             
             // Get the body request from
             let body = req.body;
-
-            // Validating the permissions
-            await this.service.id( res, { id: req.tokenData.id, rol: 'admin' } );
             
-            switch ( req.tokenData.rol ) {
-                case 'admin':
-                    if ( res.statusCode === SUCCESS ) break;
-                default:
-                    res.statusCode = FORBIDDEN;
-                    res.json({ error: 'permisos denegados' });
-                    return;
+            // Permissions
+            let check = permission(req.tokenData.rol);
+            if ( Boolean(check) ) {
+                res.statusCode = FORBIDDEN;
+                res.json(check);
+                return ;
             }
 
             // Doing the required validations
@@ -51,18 +51,19 @@ class SupervisorController extends Controller {
             let response = await this.service.register( res, body );
 
             // Return the response according to statusCode result
-            if ( res.statusCode === SUCCESS ) {
-                response.success = response.message;                
-            } else {
-                response.error = response.message;           
-            }
+            if ( res.statusCode === SUCCESS ) response.success = response.message;                
+            else response.error = response.message;
 
+            // Delete the message attribute and send response
             delete response.message;
             res.json(response)
         }
     }
 
     get () {
+
+        const permission = Permissions('admin and the same supervisor');
+
         return async ( req, res ) => {
             
             // Get the params
@@ -79,21 +80,19 @@ class SupervisorController extends Controller {
                 return ;
             }
 
-            // Validating the permissions
+            // Permissions
+            let check = permission(req.tokenData.rol, req.tokenData, body);
+            if ( Boolean(check) ) {
+                res.statusCode = FORBIDDEN;
+                res.json(check);
+                return ;
+            }
+
+            // Validate if id user is a supervisor
             let response = await this.service.id( res, body );
-            switch ( req.tokenData.rol ) {
-                case 'admin':
-                    break;
-                case 'supervisor':
-                    if ( res.statusCode === SUCCESS && response.user.id === req.tokenData.id ) break;
-                    else if ( res.statusCode === BAD_REQUEST ) {
-                        res.json( Boolean(response.message) ? { error: response.message } : response );
-                        return ;
-                    }
-                default:
-                    res.statusCode = FORBIDDEN;
-                    res.json({ error: 'permisos denegados' });
-                    return;
+            if ( res.statusCode !== SUCCESS ) {
+                res.json({ error: response.message });
+                return ;
             }
 
             // Map user data to DTO_SUPERVISOR_RESPONSE format
@@ -122,21 +121,20 @@ class SupervisorController extends Controller {
     }
 
     getAll () {
+
+        const permission = Permissions('admin');
+
         return async ( req, res ) => {
 
             // Get request params
             let body = { rows: req.params.rows, offset: req.params.offset, rol: 'supervisor' };
 
-            // Validating the permissions
-            await this.service.id( res, { id: req.tokenData.id, rol: 'admin' } );
-            
-            switch ( req.tokenData.rol ) {
-                case 'admin':
-                    if ( res.statusCode === SUCCESS ) break;
-                default:
-                    res.statusCode = FORBIDDEN;
-                    res.json({ error: 'permisos denegados' });
-                    return;
+            // Permissions
+            let check = permission(req.tokenData.rol);
+            if ( Boolean(check) ) {
+                res.statusCode = FORBIDDEN;
+                res.json(check);
+                return ;
             }
 
             // Doing the required validations
@@ -177,6 +175,9 @@ class SupervisorController extends Controller {
     }
 
     edit () {
+
+        const permission = Permissions('admin and the same supervisor');
+
         return async ( req, res ) => {
 
             // Get request body
@@ -196,22 +197,22 @@ class SupervisorController extends Controller {
                 return ;
             }
             
-            // Validating the permissions
-            let response = await this.service.id( res, { id: body.id, rol: 'supervisor' } );
-            switch ( req.tokenData.rol ) {
-                case 'admin':
-                    if ( res.statusCode === SUCCESS ) break;
-                case 'supervisor':
-                    if ( res.statusCode === SUCCESS && req.tokenData.id === response.user.id ) break;
-                    else if ( res.statusCode === BAD_REQUEST ) {
-                        res.json( Boolean(response.message) ? { error: response.message } : response );
-                        return ;
-                    }
-                default:
-                    res.statusCode = FORBIDDEN;
-                    res.json({ error: 'permisos denegados' });
-                    return;
+            // Permissions
+            let check = permission(req.tokenData.rol, req.tokenData, body);
+            if ( Boolean(check) ) {
+                res.statusCode = FORBIDDEN;
+                res.json(check);
+                return ;
             }
+
+            // Validate if id user is a supervisor
+            let response = await this.service.id( res, { id: body.id, rol: 'supervisor' } );
+            if ( res.statusCode !== SUCCESS ) {
+                res.json({ error: response.message });
+                return ;
+            }
+
+            console.log(response);
 
             // Wait the response of supervisor service
             response = await this.service.edit( res, body, response.user );
@@ -221,8 +222,44 @@ class SupervisorController extends Controller {
     }
 
     modifyState () {
-        return ( req, res ) => {
-            console.log('Esta');
+
+        const permission = Permissions('admin');
+
+        return async ( req, res ) => {
+            
+            // Get the request params
+            let body = { id: req.params.id, isActive: req.params.state };
+
+            // Doing some validations
+            try {
+                body.id = integerValidator(body.id);
+                body.isActive = isActiveValidator(body.isActive);
+            } catch (err) {
+                res.statusCode = BAD_REQUEST;
+                res.json({ error: err.message });
+                return ;
+            }
+
+            // Permissions
+            let check = permission(req.tokenData.rol);
+            if ( Boolean(check) ) {
+                res.statusCode = FORBIDDEN;
+                res.json(check);
+                return ;
+            }
+
+            // Validate if id user is a supervisor
+            await this.service.id( res, { id: body.id, rol: 'supervisor ' } );
+            if ( res.statusCode !== SUCCESS ) {
+                res.json({ error: response.message });
+                return ;
+            }
+            
+
+            let response = await this.service.modifyState( res, body );
+
+            if ( res.statusCode === SUCCESS ) res.json({ sucess: response.message});
+            else res.json({ error: response.message })
         }
     }
 

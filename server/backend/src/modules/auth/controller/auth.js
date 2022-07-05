@@ -35,9 +35,9 @@ class AuthController extends Controller {
                 passwordValidator( body.password );
 
             } catch (err) {
-                
+                console.log(err)
                 res.statusCode = BAD_REQUEST;
-                res.send({ error: err.message });
+                res.json(!Boolean(err.message) ? { error: err.error } : { error: err.message });
                 return ;
 
             }

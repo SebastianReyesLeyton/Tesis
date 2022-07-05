@@ -29,7 +29,29 @@ class UserService extends Service {
         // Check if user exists, and built the corresponding answers
         if ( response.length ) { ans.user = response[0]; } 
         else {
-            ans.message = (Boolean(obj.rol)) ? 'no existe un usuario con ese id y rol' : 'no existe un usuario con ese id';
+            ans.message = (Boolean(obj.rol)) ? `no existe un ${obj.rol} con ese id` : 'no existe un usuario con ese id';
+            res.statusCode = BAD_REQUEST;
+        }
+
+        return ans;
+    }
+
+    async available ( res, obj ) {
+
+        // Define the default values
+        let ans = { message: 'activo' };
+        res.statusCode = SUCCESS;
+
+        // Wait the response of repository
+        let response = await this.repository.available(obj);
+        
+        console.log(response);
+
+        // If the user exists
+        if ( response.length ) {
+            ans.message = ( response[0].isActive ) ? ans.message : 'no activo';
+        } else {
+            ans.message = `no existe un ${obj.rol} con id: ${obj.id} y email: ${obj.email}`;
             res.statusCode = BAD_REQUEST;
         }
 
@@ -105,7 +127,7 @@ class UserService extends Service {
         let ans = { message: 'usuario no encontrado' };
         res.statusCode = SUCCESS;
 
-        // Check that not exists an user with the same credentials
+        // Check that not exists an user with the same email
         let response = await this.email( res, obj );
         
         // If exists an user with the same email
@@ -114,7 +136,7 @@ class UserService extends Service {
             return { message: "ya existe un usuario con ese correo" }
         }
 
-        // Check that not exists an user with the same credentials
+        // Check that not exists an user with the same docnum
         response = await this.docnum( res, obj );
 
         // If exists an user with the same docnum
@@ -151,6 +173,26 @@ class UserService extends Service {
         } else {
             res.statusCode = INTERNAL_ERROR;
             ans.message = response.message;
+        }
+
+        return ans;
+
+    }
+
+    async modifyState ( res, obj ) {
+
+        // Define the default values
+        let ans = { message: 'estado actualizado' };
+        res.statusCode = SUCCESS;
+
+        // Modify the user state
+        let response = await this.repository.setState( obj );
+
+        console.log( 'e', response);
+
+        if ( response.affectedRows !== 1 ) {
+            ans.message = 'el usuario no se ha podido actualizar';
+            res.statusCode = BAD_REQUEST;
         }
 
         return ans;

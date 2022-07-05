@@ -11,7 +11,7 @@ class PrivateGateway {
     logger () {
         return (req, res, next) => {
             console.log(`[+] ${req.method} ${req.originalUrl}`); 
-            console.log('   ', req.body);
+            if ( req.method !== 'GET' ) console.log('   Body:', req.body);
             next();
         }
     }

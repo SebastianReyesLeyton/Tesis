@@ -1,8 +1,8 @@
 import Controller from '../../../models/controller';
 import UserService from '../service/user';
 import { DTO_LOGIN_RESPONSE } from '../models/user/dto.out';
-import { DTO_EMAIL_REQUEST, DTO_LOGIN_REQUEST } from '../models/user/dto.in';
-import { emailValidator, dtoValidator, passwordValidator } from '../../../lib/validator'; 
+import { DTO_EMAIL_REQUEST, DTO_LOGIN_REQUEST, DTO_AVALIABLE_REQUEST } from '../models/user/dto.in';
+import { emailValidator, dtoValidator, passwordValidator, integerValidator } from '../../../lib/validator'; 
 import { SUCCESS, BAD_REQUEST, INTERNAL_ERROR } from "../../../lib/httpCodes";
 class UserController extends Controller {
 
@@ -29,6 +29,29 @@ class UserController extends Controller {
 
             let response = await this.service.email( res, body );
             res.json(response);
+        }
+    }
+
+    available () {
+        return async (req, res) => {
+
+            // Get the body request 
+            let body = req.body;
+            console.log(body);
+
+            try {
+                dtoValidator( body, DTO_AVALIABLE_REQUEST );
+                body.id = integerValidator( body.id );
+                
+            } catch (err) {
+                res.statusCode = BAD_REQUEST;
+                res.send({ error: err.message });
+                return ;
+            }
+
+            let response = await this.service.available(res, body);
+            console.log(response);
+            res.json( (res.statusCode === SUCCESS) ? { success: response.message } : { error: response.message });
         }
     }
 

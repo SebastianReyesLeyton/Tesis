@@ -28,6 +28,12 @@ const docNumValidator = ( docnum ) => {
 
 }
 
+const isActiveValidator = ( state ) => {
+    let dic = { active: 1, no_active: 0 };
+    if ( !(state in dic) ) throw new Error("opción de estado no válida");
+    return dic[state];
+}
+
 const dtoValidator = ( dto, obj ) => {
 
     // Get keys both dto param and obj param
@@ -63,6 +69,6 @@ const dtoValidator = ( dto, obj ) => {
     }
 }
 
-export { docNumValidator, dtoValidator,  emailValidator, integerValidator, stringValidator, passwordValidator, };
+export { docNumValidator, dtoValidator,  emailValidator, integerValidator, isActiveValidator, stringValidator, passwordValidator, };
 
 // Regex: https://www.w3resource.com/javascript/form/email-validation.php

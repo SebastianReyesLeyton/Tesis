@@ -1,4 +1,5 @@
 import AuthController from "../modules/auth/controller/auth";
+import UserController from "../modules/users/controller/user";
 import { JWT_SECRET_PASSWORD } from "../conf/keys";
 import { 
     JWT_USER_HEADER,
@@ -9,7 +10,8 @@ import {
 import jwt from "jsonwebtoken";
 import ResponseOBJ from "../models/request";
 import { integerValidator } from "./validator";
-import { UNAUTHORIZED, BAD_REQUEST } from "./httpCodes";
+import { UNAUTHORIZED, BAD_REQUEST, FORBIDDEN } from "./httpCodes";
+import { SUCCESS } from "./httpCodes";
 
 export const validateAccessToken = ( ) => {
 
@@ -47,9 +49,26 @@ export const validateAccessToken = ( ) => {
         try {
             // Is token valid?
             req.tokenData = jwt.verify( tokenBody, JWT_SECRET_PASSWORD );
-            
             if ( req.tokenData.id !== integerValidator(req.header(JWT_USER_HEADER)) ) throw new Error('access denied');
-            else next();
+
+            // Check if user exists and is available 
+            let response = new ResponseOBJ();
+            await UserController.available()({ body: { id: String(req.tokenData.id), rol: req.tokenData.rol } }, response);
+
+            // If user exists, check whether is active
+            if ( response.statusCode === SUCCESS ) {
+                if ( response.data.success === 'no activo' ) {
+                    await AuthController.logout()(req, response);
+                    res.statusCode = FORBIDDEN;
+                    res.json({ error: 'permisos denegados' })
+                } else {
+                    next();
+                }
+            } else {
+                res.statusCode = FORBIDDEN;
+                res.json({ error: 'permisos denegados' })
+            }
+
 
         } catch (error) {
             
@@ -78,10 +97,12 @@ export const validateAccessToken = ( ) => {
                     break;
                 case 'access denied':
                     res.statusCode = UNAUTHORIZED;
-                    res.json({ error: 'inconsistencia en la petición' })
+                    res.json({ error: 'inconsistencia en la petición' });
                     break;
                 default:
                     console.log(error);
+                    res.statusCode = UNAUTHORIZED;
+                    res.json({ error: 'inconsistencia en la petición' });
                     break;
             }
         }

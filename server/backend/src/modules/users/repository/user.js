@@ -21,6 +21,14 @@ class UserRepository extends Repository {
         return ans;
     }
 
+    available ( obj ) {
+        const ans = this.db.query('SELECT isActive FROM user_table WHERE id = ? and rol = ?', [
+            obj.id,
+            obj.rol
+        ]);
+        return ans;
+    }
+
     email ( obj ) {
         const ans = this.db.query('SELECT * FROM user_table WHERE email = ?', [obj.email]);
         return ans;
@@ -52,7 +60,7 @@ class UserRepository extends Repository {
         return ans;
     }
 
-    setState ( { id, isActive, rol } ) {
+    setUserState ( { id, isActive, rol } ) {
         const ans = this.db.query('UPDATE user_table SET isActive = ? WHERE id = ? and rol = ?', [
             isActive,
             id,

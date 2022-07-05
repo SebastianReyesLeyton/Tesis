@@ -26,6 +26,8 @@ class AuthService extends Service {
             module: 'Auth',
             name: 'auth'
         });
+        this.refreshTime = 5*60*1000;
+        this.accessTime = '30s'
     }
 
     __createAccessToken ( obj ) {
@@ -33,7 +35,7 @@ class AuthService extends Service {
             obj,
             JWT_SECRET_PASSWORD,
             {
-                expiresIn: '30s'
+                expiresIn: this.accessTime
             });
     } 
 
@@ -82,7 +84,7 @@ class AuthService extends Service {
 
         // Get date
         let date = new Date();
-        date = new Date( date.getTime() + 5*60*1000 );
+        date = new Date( date.getTime() + this.refreshTime );
 
         try {
             // Create auth database register DTO

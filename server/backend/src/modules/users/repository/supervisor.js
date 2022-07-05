@@ -12,7 +12,7 @@ class SupervisorRepository extends UserRepository {
     }
 
     setState ( obj ) {
-        return super.setState( Object.assign(obj, { rol: 'supervisor' }));
+        return super.setUserState( Object.assign(obj, { rol: 'supervisor' }));
     }
 
 }

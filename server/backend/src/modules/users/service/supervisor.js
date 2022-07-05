@@ -17,7 +17,7 @@ class SupervisorService extends UserService {
         let ans = { message: 'registrado con éxito' };
         res.statusCode = SUCCESS;
 
-        // Map the entry obj to DTO_REGISTER_MYSQL format
+        // Map the entry obj to DTO_REGISTER_MYSQL format and encrypt the password
         try {
             this.mapper.map( obj, DTO_REGISTER_MYSQL, (dto) => {
 
@@ -28,7 +28,7 @@ class SupervisorService extends UserService {
                 delete dto.password;
 
                 return dto;
-            } )
+            });
         } catch (err) {
             res.statusCode = INTERNAL_ERROR;
             ans = err;
@@ -39,9 +39,7 @@ class SupervisorService extends UserService {
         let response = await this.registerUser( res, Object.assign(this.mapper.obj,{ rol: 'supervisor', doctype: 1}));
 
         // Is it ok?
-        if ( res.statusCode !== SUCCESS ) {
-            ans.message = response.message;
-        }
+        if ( res.statusCode !== SUCCESS ) ans.message = response.message;
 
         return ans;
     }
@@ -71,18 +69,21 @@ class SupervisorService extends UserService {
         let response
 
         if ( obj.email !== user.email ) {
-            // Check that not exists an user with the same credentials
+
+            // Check that not exists an user with the same email
             response = await this.email( res, obj );
-                    
+            
             // If exists an user with the same email
             if ( res.statusCode === SUCCESS ) {
                 res.statusCode = BAD_REQUEST;
                 return { message: "ya existe un usuario con ese correo" }
             }
+
         }
 
         if ( obj.docnum !== user.docnum ) {
-            // Check that not exists an user with the same credentials
+
+            // Check that not exists an user with the same docnum
             response = await this.docnum( res, obj );
 
             // If exists an user with the same docnum
@@ -90,6 +91,7 @@ class SupervisorService extends UserService {
                 res.statusCode = BAD_REQUEST;
                 return { message: "ya existe un usuario con ese número de documento" }
             }
+
         }
 
         // Reset status code response
