@@ -1,5 +1,4 @@
 import UserRepository from "./user";
-import { users } from "../../../conf/databases";
 
 class SupervisorRepository extends UserRepository {
 

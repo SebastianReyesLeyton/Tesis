@@ -1,14 +1,14 @@
 import UTF8 from "utf8";
 import UserService from "./user";
-import SupervisorRepository from "../repository/supervisor";
-import { DTO_REGISTER_MYSQL, DTO_UPDATE_SUPERVISOR_MYSQL } from "../models/supervisor/dto.out";
-import { PasswordCipher } from "../../../lib/encrypt";
+import TherapistRepository from "../repository/therapist";
+import { DTO_REGISTER_MYSQL, DTO_THERAPIST_MYSQL_RELATION, DTO_UPDATE_THERAPIST_MYSQL } from "../models/therapist/dto.out";
 import { SUCCESS, INTERNAL_ERROR, BAD_REQUEST } from "../../../lib/httpCodes";
+import { PasswordCipher } from "../../../lib/encrypt";
 
-class SupervisorService extends UserService {
+class TherapistService extends UserService {
 
-    constructor() {
-        super( new SupervisorRepository(), 'supervisor' );
+    constructor () {
+        super ( new TherapistRepository(), 'therapist' );
         this.cipher = PasswordCipher.getInstance();
     }
 
@@ -37,12 +37,13 @@ class SupervisorService extends UserService {
         }
 
         // Wait to UserService register the user
-        let response = await this.registerUser( res, Object.assign(this.mapper.obj,{ rol: 'supervisor', doctype: 1 }));
+        let response = await this.registerUser( res, Object.assign(this.mapper.obj,{ rol: 'terapeuta', doctype: 1 }));
 
         // Is it ok?
         if ( res.statusCode !== SUCCESS ) ans.message = response.message;
 
         return ans;
+
     }
 
     async getAll ( res, obj ) {
@@ -100,7 +101,7 @@ class SupervisorService extends UserService {
 
         // Map the entry obj to  format
         try {
-            this.mapper.map( obj, DTO_UPDATE_SUPERVISOR_MYSQL, (dto) => {
+            this.mapper.map( obj, DTO_UPDATE_THERAPIST_MYSQL, (dto) => {
 
                 dto.fullname = UTF8.encode(dto.name);
                 dto.passcode = (dto.newPassword === '') ? user.passcode : this.cipher.encrypt(dto.newPassword);
@@ -130,6 +131,45 @@ class SupervisorService extends UserService {
 
     }
 
+    async relatePatient ( res, obj ) {
+
+        // Define the default values
+        let ans = { message: 'relación creada' };
+        res.statusCode = SUCCESS;
+
+        // Map the entry obj to format
+        try {
+            this.mapper.map( obj, DTO_THERAPIST_MYSQL_RELATION, (dto) => {
+
+                dto.idTherapist =  dto.therapist;
+                dto.idPatient = dto.patient;
+
+                delete dto.therapist;
+                delete dto.patient;
+
+                return dto;
+            } );
+
+        } catch (err) {
+            res.statusCode = INTERNAL_ERROR;
+            ans = err;
+            return ans;
+        }
+
+        let response = await this.repository.registerRelation( this.mapper.obj );
+
+        // The register was successful?
+        if ( response.affectedRows === 1 ) { 
+            ans.id = response.insertId;
+        } else {
+            res.statusCode = INTERNAL_ERROR;
+            ans.message = response.message;
+        }
+
+        return ans;
+
+    }
+
 }
 
-export default SupervisorService;
+export default TherapistService;

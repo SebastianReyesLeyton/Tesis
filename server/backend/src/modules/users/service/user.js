@@ -5,7 +5,7 @@ import { SUCCESS, BAD_REQUEST, INTERNAL_ERROR } from "../../../lib/httpCodes";
 
 class UserService extends Service {
 
-    constructor (repository= new UserRepository(), name = 'user') {
+    constructor ( repository = new UserRepository(), name = 'user') {
         super({
             repository, 
             module: 'User', 
@@ -44,8 +44,6 @@ class UserService extends Service {
 
         // Wait the response of repository
         let response = await this.repository.available(obj);
-        
-        console.log(response);
 
         // If the user exists
         if ( response.length ) {
@@ -187,8 +185,6 @@ class UserService extends Service {
 
         // Modify the user state
         let response = await this.repository.setState( obj );
-
-        console.log( 'e', response);
 
         if ( response.affectedRows !== 1 ) {
             ans.message = 'el usuario no se ha podido actualizar';
