@@ -30,7 +30,7 @@ commit () {
 }
 
 tag () {
-    git tag -a $1 -m $2
+    git tag -a $1 -m ${@:2}
 }
 
 upload () {
