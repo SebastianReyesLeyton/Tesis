@@ -1,3 +1,4 @@
+import UTF8 from "utf8";
 import Controller from '../../../models/controller';
 import UserService from '../service/user';
 import { DTO_LOGIN_RESPONSE } from '../models/user/dto.out';
@@ -87,7 +88,7 @@ class UserController extends Controller {
                     this.mapper.map( response.user, DTO_LOGIN_RESPONSE, (dto) => {
                         return {
                             id: dto.id,
-                            name: dto.fullname,
+                            name: UTF8.decode(dto.fullname),
                             rol: dto.rol
                         };
                     });

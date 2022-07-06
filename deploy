@@ -38,7 +38,7 @@ destroy () {
     echo -e "[+] Removing services"
     sudo docker-compose down 
     sudo docker image rm mmapi rsfront
-    sudo docker volume prune
+    sudo docker volume prune --force
     popd
 }
 

@@ -195,6 +195,27 @@ class UserService extends Service {
 
     }
 
+    async getRelation ( res, obj ) {
+
+        // Define the default values
+        let ans = { message: 'encontrado' };
+        res.statusCode = SUCCESS;
+
+        // Get user relation
+        let response = await this.repository.getRelation( obj );
+
+        // If relation does not exists return an error message
+        if ( response.length !== 1 ) {
+            ans.message = 'la relación no existe';
+            res.statusCode = BAD_REQUEST;
+        } else {
+            ans.relation = response[0];
+        }
+
+        return ans;
+
+    }
+
 }
 
 export default UserService;

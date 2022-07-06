@@ -9,6 +9,7 @@ const controller = TherapistController;
 router.get('/get/:id', validateAccessToken(), controller.get() );
 router.get('/all/:rows/:offset', validateAccessToken(), controller.getAll() );
 router.get('/modify-state/:id/:state', validateAccessToken(), controller.modifyState() );
+router.get('/relate-patient/:therapist/:patient', validateAccessToken(), controller.relatePatient() );
 
 /* POST routes */
 router.post('/register', validateAccessToken(), controller.register() );

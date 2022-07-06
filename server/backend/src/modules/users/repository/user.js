@@ -60,6 +60,14 @@ class UserRepository extends Repository {
         return ans;
     }
 
+    getRelation ( obj ) {
+        const ans = this.db.query('SELECT * FROM relation_therapist_patient_table WHERE idTherapist = ? AND idPatient = ?', [
+            obj.idTherapist,
+            obj.idPatient
+        ])
+        return ans;
+    }
+
     setUserState ( { id, isActive, rol } ) {
         const ans = this.db.query('UPDATE user_table SET isActive = ? WHERE id = ? and rol = ?', [
             isActive,

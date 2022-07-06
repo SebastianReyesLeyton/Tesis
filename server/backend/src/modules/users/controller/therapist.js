@@ -308,7 +308,6 @@ class TherapistController extends Controller {
 
             // Validate if body.therapist is a therapist
             let response = await this.service.id( res, { id: body.therapist, rol: 'terapeuta' } );
-            console.log(res.statusCode)
             if ( res.statusCode !== SUCCESS ) {
                 res.json({ error: response.message });
                 return ; 
@@ -316,15 +315,16 @@ class TherapistController extends Controller {
 
             // Validate if body.patient is a patient
             response = await this.service.id( res, { id: body.patient, rol: 'paciente' } );
-            console.log(res.statusCode)
             if ( res.statusCode !== SUCCESS ) {
                 res.json({ error: response.message });
                 return ; 
             }
 
-            response = await this.service.relatePatient( req, body );
-
-            console.log(response);
+            // Wait the response of therapist service
+            response = await this.service.relatePatient( res, body );
+            
+            res.json(( res.statusCode === SUCCESS ) ? { success: response.message } : { error: response.message });
+            
         }
     }
 }

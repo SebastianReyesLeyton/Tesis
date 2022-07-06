@@ -33,6 +33,6 @@ export const DTO_UPDATE_THERAPIST_MYSQL = {
 };
 
 export const DTO_THERAPIST_MYSQL_RELATION = {
-    idTherapist: String(),
-    idPatient: String()
+    idTherapist: Number(),
+    idPatient: Number()
 }

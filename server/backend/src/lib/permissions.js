@@ -102,6 +102,7 @@ const Permissions = ( type ) => {
                         break;
                 }
 
+                return ans;
             }
             break;
         default:

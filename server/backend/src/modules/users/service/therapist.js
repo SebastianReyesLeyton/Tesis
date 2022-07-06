@@ -156,7 +156,19 @@ class TherapistService extends UserService {
             return ans;
         }
 
-        let response = await this.repository.registerRelation( this.mapper.obj );
+        // Validate that relation does not exist
+        let response = await this.getRelation( res, this.mapper.obj );
+        
+        if ( res.statusCode === SUCCESS ) {
+            res.statusCode = BAD_REQUEST;
+            return { message: 'la relación ya existe' };
+        }
+
+        // Reset the res status code
+        res.statusCode = SUCCESS;
+
+        // Register the new relation
+        response = await this.repository.registerRelation( this.mapper.obj );
 
         // The register was successful?
         if ( response.affectedRows === 1 ) { 
