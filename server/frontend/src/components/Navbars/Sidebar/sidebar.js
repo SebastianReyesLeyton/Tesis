@@ -1,5 +1,5 @@
 import { navbarOptions } from "../../../constants";
-
+import Logo from "../../../img/logos/Logo5.png";
 import { Link } from "react-router-dom";
 
 import './sidebar.css';
@@ -9,11 +9,14 @@ const Sidebar = (props) => {
 	let options = {};
 	
     switch ( props.user.rol ) {
+		case "admin":
+			options = Object.assign({}, navbarOptions.admin);
+			break;
 		case "supervisor":
 			options = Object.assign({}, navbarOptions.supervisor);
             break;
-		case "admin":
-			options = Object.assign({}, navbarOptions.admin);
+		case "terapeuta":
+			options = Object.assign({}, navbarOptions.therapist);
 			break;
 		default:
 			break;
@@ -22,6 +25,7 @@ const Sidebar = (props) => {
   	return (
 		<div className='sidebar'>
 			<div className='top'>
+				<img src={Logo} className="logo" alt="logo"/>
 			</div>
 			<div className='center'>
 				<ul>

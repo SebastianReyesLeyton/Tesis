@@ -5,6 +5,19 @@
     background-color: rgba(255, 255, 255, 0.15);
     margin: 0.5rem 0.5rem 0.5rem 0;
     border-radius: 0.65rem;
+    animation: sidebarEffect 700ms;
+}
+
+@keyframes sidebarEffect {
+    0% {
+        opacity: 0;
+    }
+    60% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 .topbar .profile-container {

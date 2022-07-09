@@ -87,6 +87,7 @@ const Permissions = ( type ) => {
             break;
         case 'supervisor and the same therapist':
             callback = (rol, therapist, body) => {
+
                 // Define the default value to return
                 let ans = undefined;
 
@@ -96,6 +97,45 @@ const Permissions = ( type ) => {
                         break;
                     case 'terapeuta':
                         if ( body.id !== therapist.id ) ans = callback('error');
+                        break;
+                    default:
+                        ans = { error: 'permisos denegados' };
+                        break;
+                }
+
+                return ans;
+            }
+            break;
+        case 'therapist':
+            callback = (rol) => {
+
+                // Define the default value to return
+                let ans = undefined;
+
+                // Permissions
+                switch (rol) {
+                    case 'terapeuta':
+                        break;
+                    default:
+                        ans = { error: 'permisos denegados' };
+                        break;
+                }
+
+                return ans;
+            }
+            break;
+        case 'therapist and the same patient':
+            callback = (rol, patient, body) => {
+                
+                // Define the default value to return
+                let ans = undefined;
+
+                switch (rol) {
+                    case 'terapeuta':
+                        ans = { message: 'chequear relación' };
+                        break;
+                    case 'paciente':
+                        if ( body.id !== patient.id ) ans = callback("error");
                         break;
                     default:
                         ans = { error: 'permisos denegados' };

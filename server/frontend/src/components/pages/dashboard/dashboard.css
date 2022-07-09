@@ -55,4 +55,15 @@
     border-radius: 0.55rem;
     background-color: rgba(255, 255, 255, 0.15);
     margin: 0 0.5rem 0.5rem 0;
+    animation: dashboardContentEffect 900ms;
+    overflow: hidden;
+}
+
+@keyframes dashboardContentEffect {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }

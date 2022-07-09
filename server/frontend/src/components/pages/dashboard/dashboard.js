@@ -1,22 +1,15 @@
 import { useSelector } from "react-redux";
 import { Sidebar, Topbar } from "../../Navbars";
-import RegisterComponent from "../../register";
 import { Navigate } from "react-router-dom";
 
 import "./dashboard.css";
-import { useEffect } from "react";
+import DashboardContentComponent from "../../dashboard-content";
 
 const DashboardPage = () => {
 
-    const reactUser = useSelector((state) => state.auth.user);
-    let user = Boolean(reactUser) ? reactUser : JSON.parse(localStorage.getItem('user'));
+    const user = useSelector((state) => state.auth.user) || JSON.parse(localStorage.getItem('user'));
     
-    useEffect(() => {
-
-        if ( !Boolean(user) ) {
-            return ( <Navigate to="/" /> );
-        }
-    });
+    if ( !Boolean(user) ) return <Navigate to="/" replace />;
 
     return (
         <div className="dashboard-container">
@@ -25,7 +18,7 @@ const DashboardPage = () => {
                 <div className="dashboard-content-container">
                     <Topbar user={user}/>
                     <div className="dashboard-content">
-                        <RegisterComponent user={user} />
+                        <DashboardContentComponent user={user} />
                     </div>
                 </div>
             </div>

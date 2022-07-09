@@ -12,7 +12,8 @@ export const DTO_SUPERVISORS_RESPONSE = {
     id: Number(),
     name: String(),
     email: String(),
-    docnum: String()
+    docnum: String(),
+    active: String()
 };
 
 /* MySQL DTOs */

@@ -38,7 +38,6 @@ class UserController extends Controller {
 
             // Get the body request 
             let body = req.body;
-            console.log(body);
 
             try {
                 dtoValidator( body, DTO_AVALIABLE_REQUEST );
@@ -51,7 +50,7 @@ class UserController extends Controller {
             }
 
             let response = await this.service.available(res, body);
-            console.log(response);
+            
             res.json( (res.statusCode === SUCCESS) ? { success: response.message } : { error: response.message });
         }
     }

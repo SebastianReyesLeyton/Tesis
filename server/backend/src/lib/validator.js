@@ -29,9 +29,21 @@ const docNumValidator = ( docnum ) => {
 }
 
 const isActiveValidator = ( state ) => {
-    let dic = { active: 1, no_active: 0 };
+    let dic = { active: 1, disabled: 0 };
     if ( !(state in dic) ) throw new Error("opción de estado no válida");
     return dic[state];
+}
+
+const dateValidator = ( d ) => {
+
+    const regex = /^\d{4}\/\d{2}\/\d{2}$/;
+    if ( d.match(regex) === null ) throw new Error("formato de fecha no válido");
+    
+    const isoFormat = d.split('/').join('-');
+    const date = new Date(isoFormat);
+    const timestamp = date.getTime();
+
+    if ( typeof timestamp !== 'number' || Number.isNaN(timestamp)) throw new Error("fecha no válida");
 }
 
 const dtoValidator = ( dto, obj ) => {
@@ -69,6 +81,6 @@ const dtoValidator = ( dto, obj ) => {
     }
 }
 
-export { docNumValidator, dtoValidator,  emailValidator, integerValidator, isActiveValidator, stringValidator, passwordValidator, };
+export { dateValidator, docNumValidator, dtoValidator,  emailValidator, integerValidator, isActiveValidator, stringValidator, passwordValidator, };
 
 // Regex: https://www.w3resource.com/javascript/form/email-validation.php

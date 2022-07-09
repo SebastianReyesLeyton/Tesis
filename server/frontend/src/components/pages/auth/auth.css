@@ -17,6 +17,17 @@
     box-sizing: border-box;
     border-radius: 0.65rem;
     grid-template-columns: 45% 1fr;
+    transition: all ease-in-out 500ms;
+    animation: loginEffect 500ms;
+}
+
+@keyframes loginEffect {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 .auth-container .auth-card .auth-form {
@@ -24,6 +35,7 @@
     padding: 3rem;
     height: calc(100% - 3rem*2);
     background-color: rgba(255, 255, 255, 0.9);
+    overflow: hidden;
 }
 
 .auth-container .auth-card .auth-form .login-form {
@@ -32,6 +44,17 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    transition: all ease-in-out 500ms;
+    animation: loginEffect 1000ms;
+}
+
+@keyframes loginEffect {
+    0% {
+        margin-left: 100%;
+    }
+    100% {
+        margin-left: 0;
+    }
 }
 
 .auth-container .auth-card .auth-form .login-form .title {
@@ -57,6 +80,7 @@
     overflow: hidden;
     justify-content: left;
     background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(25px);
 }
 
 .auth-container .auth-card .auth-complement span {

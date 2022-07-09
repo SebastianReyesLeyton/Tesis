@@ -34,7 +34,7 @@ USE sitefodi_auth;
 CREATE TABLE refresh_tokens_table (
 
     token   VARCHAR(24),
-    expire  TIMESTAMP,
+    expire  DATETIME,
     user    INTEGER,
     PRIMARY KEY (token),
     FOREIGN KEY (user) REFERENCES sitefodi_users.user_table(id)

@@ -17,7 +17,7 @@ export const AdminOptions = {
         {
             option: "Ver/Editar",
             icon: <FontAwesomeIcon icon={faUsersGear} className="icon" />,
-            link: "/home"
+            link: "/show/supervisor"
         },
         {
             option: "Modificar estado",
@@ -29,7 +29,7 @@ export const AdminOptions = {
         {
             option: "Registrar",
             icon: <FontAwesomeIcon icon={faHospitalUser} className="icon" />,
-            link: "/home"
+            link: "/register/therapist"
         },
         {
             option: "Ver/Editar",

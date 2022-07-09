@@ -126,7 +126,7 @@ class UserService extends Service {
         res.statusCode = SUCCESS;
 
         // Check that not exists an user with the same email
-        let response = await this.email( res, obj );
+        await this.email( res, obj );
         
         // If exists an user with the same email
         if ( res.statusCode === SUCCESS ) {
@@ -135,7 +135,7 @@ class UserService extends Service {
         }
 
         // Check that not exists an user with the same docnum
-        response = await this.docnum( res, obj );
+        await this.docnum( res, obj );
 
         // If exists an user with the same docnum
         if ( res.statusCode === SUCCESS ) {

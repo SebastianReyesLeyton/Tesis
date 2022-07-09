@@ -160,6 +160,7 @@ class SupervisorController extends Controller {
                     this.mapper.map( element, DTO_SUPERVISORS_RESPONSE, (dto) => {
 
                         dto.name = dto.fullname;
+                        dto.active = ( dto.isActive ) ? 'activo' : 'deshabilitado';
 
                         delete dto.fullname;
                         delete dto.isActive;
@@ -169,7 +170,7 @@ class SupervisorController extends Controller {
                 } catch ( err ) {
                     console.log(err);
                 }
-            })
+            });
 
             // Return the response
             res.json(response);
@@ -260,7 +261,7 @@ class SupervisorController extends Controller {
 
             response = await this.service.modifyState( res, body );
 
-            if ( res.statusCode === SUCCESS ) res.json({ sucess: response.message});
+            if ( res.statusCode === SUCCESS ) res.json({ success: response.message});
             else res.json({ error: response.message })
         }
     }

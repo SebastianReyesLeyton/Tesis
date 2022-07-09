@@ -19,7 +19,7 @@ const AvatarsComponent = () => {
             <ul className="avatars-options">
                 {
                     Avatars.map((item, index) => (
-                        <li key={index} className="avatar-option-container"  onClick={handleAvatar(item)}>
+                        <li key={index} className="avatar-option-container" style={{"--i": `${index*100}ms`}} onClick={handleAvatar(item)}>
                             <img src={item} className="avatar-option" alt="" />
                         </li>
                     ))

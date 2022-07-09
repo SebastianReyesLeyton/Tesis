@@ -4,20 +4,20 @@ const userSlice = createSlice({
     name: 'userRequest',
     initialState: {},
     reducers: {
-        register: (state, data) => {
-            state = Object.assign({}, data.payload);
+        successAlertState: (state, { payload }) => {
+            state = Object.assign({}, payload.data);
             return state;
         },
-        userError: (state, data) => {
-            state = Object.assign({}, data.payload);
+        errorAlertState: (state, { payload }) => {
+            state = Object.assign({}, payload.data);
             return state;
         },
-        resetUserState: (state) => {
+        resetAlertState: (state) => {
             state = {}
             return state;
         }
     }
 });
 
-export const { register, userError, resetUserState } = userSlice.actions;
+export const { successAlertState, errorAlertState, resetAlertState } = userSlice.actions;
 export default userSlice.reducer;

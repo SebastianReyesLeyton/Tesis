@@ -32,6 +32,22 @@
     transition: all ease-in 500ms;
     border-radius: 50%;
     overflow: hidden;
+    animation: avatarOptionEffect calc(250ms + var(--i));
+}
+
+@keyframes avatarOptionEffect {
+    0% {
+        opacity: 0;
+        margin-bottom: 1rem;
+    }
+    70% {
+        opacity: 0.1;
+        margin-bottom: 0.5rem;
+    }
+    100% {
+        opacity: 1;
+        margin-bottom: 0.2rem;
+    }
 }
 
 .avatars-container .avatars-options .avatar-option-container:before {

@@ -1,10 +1,10 @@
 import axios from "axios";
-import { USER_BASE_URL } from "./conf";
+import { USER_BASE_URL } from "../conf";
 
-const SUPERVISOR_BASE_URL = USER_BASE_URL + '/supervisor';
+const PATIENT_BASE_URL = USER_BASE_URL + '/patient';
 
 export const register = (data) => axios.post(
-    `${SUPERVISOR_BASE_URL}/register`,
+    `${PATIENT_BASE_URL}/register`,
     data,
     {
         headers: {

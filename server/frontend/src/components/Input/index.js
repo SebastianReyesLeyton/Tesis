@@ -1,4 +1,6 @@
 import InputText from "./InputText";
+import InputSelect from "./InputSelect";
+import InputDate from "./InputDate";
 
 export default function CompleteInput (props) {
 
@@ -7,6 +9,10 @@ export default function CompleteInput (props) {
             return InputText(props);
         case 'password':
             return InputText(props);
+        case 'select':
+            return InputSelect(props);
+        case 'date':
+            return InputDate(props);
         default:
             break;
     }

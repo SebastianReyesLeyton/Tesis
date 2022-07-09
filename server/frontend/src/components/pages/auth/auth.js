@@ -3,9 +3,9 @@ import { Button } from "@mui/material";
 import CompleteInput from "../../Input";
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from "../../../actions/auth";
-import Error from "../../Error"
+import { Error } from "../../alert";
 import { useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 import "./auth.css";
 import AvatarsComponent from "../../avatars/avatars";
@@ -21,6 +21,7 @@ const LoginPage = () => {
     const errorRef = useRef(null);
     
     let apiError = useSelector((state) => state.auth);
+    console.log(apiError);
     
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -28,6 +29,10 @@ const LoginPage = () => {
         if (errorRef.current != null) errorRef.current.hiddenAlert(Boolean(apiError.error));
     }
     
+    const user = useSelector((state) => state.auth.user) || JSON.parse(localStorage.getItem('user'));
+    
+    if ( Boolean(user) ) return <Navigate to="/home" replace />;
+
     return (
         <div className="auth-container">
             { Boolean(apiError.error) && <Error ref={errorRef}>{apiError.error}</Error> }
