@@ -10,7 +10,9 @@
 # #######################################################
 
 INST=$1
-ARGS=${@:2}
+ARG1=$2
+ARG2=$3
+ARGS=${@:6}
 
 options () {
     echo -e " COMMANDS      \t ARGUMENTS        \t DESCRIPTION "
@@ -30,7 +32,7 @@ commit () {
 }
 
 tag () {
-    git tag -a $1 -m ${@:2}
+    git tag -a $1 -m $2
 }
 
 upload () {
@@ -43,20 +45,20 @@ all () {
 }
 
 main () {
-    echo $ARGS
+    echo $ARGS $#
     if [[ "$INST" == "commit" ]]; then
-        commit $ARGS
+        commit $ARG1 $ARG2 $ARGS
     elif [[ "$INST" == "create-tag" ]]; then
-        tag $ARGS
+        tag $ARG1 $ARG2
     elif [[ "$INST" == "push" ]]; then
         upload $ARGS
     elif [[ "$INST" == "add-tag" ]]; then
         upload --tags
     elif [[ "$INST" == "all" ]]; then
-        all $ARGS
+        all $ARG1 $ARG2 $ARGS
     else
         options
     fi
 }
 
-main 
+main

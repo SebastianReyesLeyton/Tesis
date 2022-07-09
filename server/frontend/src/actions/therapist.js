@@ -1,7 +1,7 @@
 import * as API from '../api/user/therapist';
-import { closeSession  } from '../reducers/auth';
-import { successAlertState, errorAlertState } from '../reducers/user';
-import { loginError } from '../reducers/auth';
+import { successAlertState } from '../reducers/user';
+import { storeUsers } from '../reducers/users';
+import error from './errors';
 
 export const registerTherapist = (userData, navigate) => async (dispatch) => {
 
@@ -20,25 +20,47 @@ export const registerTherapist = (userData, navigate) => async (dispatch) => {
         }
 
     } catch (err) {
+        dispatch(error(err, navigate));
+    }
+}
+
+export const getTherapists = ({ rows, offset }, navigate) => async (dispatch) => {
+    try {
         
-        switch (err.message) {
-            case 'Request failed with status code 401':
-                if (err.response.data.error === 'token no valido' ) {
-                    dispatch(closeSession());
-                    navigate("/", { replace: true });
-                } else if ( err.response.data.error === 'inconsistencia en la petición' ) {
-                    dispatch(closeSession());
-                    dispatch(loginError(err.response.data));
-                    navigate("/", { replace: true });
-                } else {
-                    console.log(err);
-                }
-                break;
-            case 'Request failed with status code 400':
-                dispatch(errorAlertState( { data:  err.response.data } ));
+        let response = await API.getAll({ rows, offset });
+        
+        switch (response.data.message) {
+            case "tiene refresh token":
+                localStorage.setItem('token', response.data.accessToken);
+                dispatch(getTherapists({ rows, offset }, navigate));
                 break;
             default:
-                console.log(err);
+                dispatch(storeUsers(response.data));
+                break;
         }
+        
+    } catch (err) {
+        dispatch(error(err, navigate));
+    }
+}
+
+export const modifyTherapistState = ({ id, newState }, navigate) => async (dispatch) => {
+    
+    try {
+        
+        let response = await API.modifyState(id, newState);
+        
+        switch (response.data.message) {
+            case "tiene refresh token":
+                localStorage.setItem('token', response.data.accessToken);
+                dispatch(modifyTherapistState({ id, newState }, navigate));
+                break;
+            default:
+                dispatch(successAlertState({ data: response.data }));
+                break;
+        }
+        
+    } catch (err) {
+        dispatch(error(err, navigate));
     }
 }

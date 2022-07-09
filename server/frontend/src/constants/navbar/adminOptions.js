@@ -3,8 +3,7 @@ import {
     faUserGear, 
     faUsersGear,
     faHospitalUser,
-    faUsersLine,
-    faUserTag
+    faUsersLine
 } from '@fortawesome/free-solid-svg-icons';
 
 export const AdminOptions = {
@@ -15,14 +14,9 @@ export const AdminOptions = {
             link: "/register/supervisor"
         },
         {
-            option: "Ver/Editar",
+            option: "Ver, editar y modificar",
             icon: <FontAwesomeIcon icon={faUsersGear} className="icon" />,
             link: "/show/supervisor"
-        },
-        {
-            option: "Modificar estado",
-            icon: <FontAwesomeIcon icon={faUserTag} className="icon" />,
-            link: "/home"
         }
     ],
     Terapeuta: [
@@ -32,14 +26,9 @@ export const AdminOptions = {
             link: "/register/therapist"
         },
         {
-            option: "Ver/Editar",
+            option: "Ver, editar y modificar",
             icon: <FontAwesomeIcon icon={faUsersLine} className="icon" />,
-            link: "/home"
-        },
-        {
-            option: "Modificar estado",
-            icon: <FontAwesomeIcon icon={faUserTag} className="icon" />,
-            link: "/home"
+            link: "/show/therapist"
         }
     ]
 }

@@ -16,6 +16,8 @@ const App = () => {
                 </Route>
                 <Route path='/show'>
                     <Route path='supervisor' element={<DashboardPage />} />
+                    <Route path='therapist' element={<DashboardPage />} />
+                    <Route path='patient' element={<DashboardPage />} />
                 </Route>
             </Routes>
         </BrowserRouter>

@@ -1,7 +1,9 @@
 import * as API from '../api/user/supervisor';
-import { closeSession  } from '../reducers/auth';
-import { successAlertState, errorAlertState } from '../reducers/user';
-import { loginError } from '../reducers/auth';
+
+import { successAlertState } from '../reducers/user';
+import { storeUsers } from '../reducers/users';
+
+import error from './errors';
 
 export const registerSupervisor = (userData, navigate) => async (dispatch) => {
 
@@ -20,26 +22,48 @@ export const registerSupervisor = (userData, navigate) => async (dispatch) => {
         }
 
     } catch (err) {
+        dispatch(error(err, navigate));
+    }
+}
+
+export const getSupervisors = ({ rows, offset }, navigate) => async (dispatch) => {
+
+    try {
         
-        switch (err.message) {
-            case 'Request failed with status code 401':
-                if (err.response.data.error === 'token no valido' ) {
-                    dispatch(closeSession());
-                    navigate("/", { replace: true });
-                } else if ( err.response.data.error === 'inconsistencia en la petición' ) {
-                    dispatch(closeSession());
-                    dispatch(loginError(err.response.data));
-                    navigate("/", { replace: true });
-                } else {
-                    console.log(err);
-                }
-                break;
-            case 'Request failed with status code 400':
-                dispatch(errorAlertState( { data: err.response.data })); 
+        let response = await API.getAll({ rows, offset });
+        
+        switch (response.data.message) {
+            case "tiene refresh token":
+                localStorage.setItem('token', response.data.accessToken);
+                dispatch(getSupervisors({ rows, offset }, navigate));
                 break;
             default:
-                console.log(err);
+                dispatch(storeUsers(response.data));
+                break;
         }
         
+    } catch (err) {
+        dispatch(error(err, navigate));
+    }
+}
+
+export const modifySupervisorState = ({ id, newState }, navigate) => async (dispatch) => {
+    
+    try {
+        
+        let response = await API.modifyState(id, newState);
+
+        switch (response.data.message) {
+            case "tiene refresh token":
+                localStorage.setItem('token', response.data.accessToken);
+                dispatch(modifySupervisorState({ id, newState }, navigate));
+                break;
+            default:
+                dispatch(successAlertState({ data: response.data }));
+                break;
+        }
+        
+    } catch (err) {
+        dispatch(error(err, navigate));
     }
 }

@@ -53,6 +53,10 @@ class PatientRepository extends UserRepository {
         return ans;
     }
 
+    setState ( obj ) {
+        return super.setUserState( Object.assign(obj, { rol: 'paciente' }));
+    }
+
 }
 
 export default PatientRepository;

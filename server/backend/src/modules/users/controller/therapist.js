@@ -101,7 +101,7 @@ class TherapistController extends Controller {
                 
                 this.mapper.map( response.user, DTO_THERAPIST_RESPONSE, (dto) => {
 
-                    dto.name = dto.fullname;
+                    dto.name = UTF8.decode(dto.fullname);
                     dto.doctype = UTF8.decode(dto.doctype);
 
                     delete dto.fullname;
@@ -161,8 +161,8 @@ class TherapistController extends Controller {
 
                     this.mapper.map( element, DTO_THERAPISTS_RESPONSE, (dto) => {
 
-                        dto.name = dto.fullname;
-                        dto.active = ( dto.isActive ) ? 'activo' : 'deshabilitado';
+                        dto.name = UTF8.decode(dto.fullname);
+                        dto.active = ( dto.isActive ) ? 'activo' : 'bloqueado';
                         
                         delete dto.fullname;
                         delete dto.isActive;
