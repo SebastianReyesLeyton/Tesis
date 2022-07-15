@@ -21,7 +21,6 @@ const LoginPage = () => {
     const errorRef = useRef(null);
     
     let apiError = useSelector((state) => state.auth);
-    console.log(apiError);
     
     const handleSubmit = async (e) => {
         e.preventDefault();

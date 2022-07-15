@@ -45,7 +45,7 @@ all () {
 }
 
 main () {
-    echo $ARGS $#
+    
     if [[ "$INST" == "commit" ]]; then
         commit $ARG1 $ARG2 $ARGS
     elif [[ "$INST" == "create-tag" ]]; then

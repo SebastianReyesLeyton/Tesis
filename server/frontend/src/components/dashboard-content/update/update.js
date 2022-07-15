@@ -1,49 +1,52 @@
+import { useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams, useNavigate } from "react-router-dom"
 import useForm from "../../Form/useForm";
 import CompleteInput from "../../Input";
 import Form from "../../Form/Form";
 import { Error, Success } from "../../alert";
 import { Button } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { useEffect, useRef } from "react";
 
 import { resetAlertState } from "../../../reducers/user";
+import { getSupervisor } from "../../../actions/supervisor";
 
-import "./register.css";
+import "./update.css";
 
-const RegisterContentComponent = ({ infoContent }) => {
+const UpdateContentComponent = ({ infoContent }) => {
 
-    const { values, setValues, handleInputChange } = useForm(infoContent.initialValues);
+    let { id } = useParams();
+    const alertRef = useRef(null);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const alertRef = useRef(null);
+    const userData = useSelector((state) => state.getUser);
+    const { values, setValues, handleInputChange } = useForm(infoContent.initialValue);
     let alertMessage = useSelector((state) => state.userRequest);
-    
+
     useEffect(() => {
         dispatch(resetAlertState());
-    }, []);
+        dispatch(getSupervisor(id, navigate));
+    }, []); 
 
-    const handleClear = (e) => {
-        e.preventDefault();
-        setValues(infoContent.initialValues);
-        dispatch(resetAlertState()); 
-    }
+    useEffect(() => {
+        setValues(infoContent.initialization(userData));
+    }, [userData]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(values);
-        dispatch(infoContent.action(values, navigate));
-        if (alertRef.current != null) alertRef.current.hiddenAlert(Boolean(alertMessage.error) || Boolean(alertMessage.success));
+    }
+
+    const handleBackAction = (e) => {
+        navigate(-1);
     }
 
     return (
-        <div className="register-container">
+        <div className='update-container'>
             {  ( Boolean(alertMessage.error) ) && <Error ref={alertRef}>{alertMessage.error}</Error>}
             {  ( Boolean(alertMessage.success) ) && <Success ref={alertRef}>{alertMessage.success}</Success>}
             <h1 className="title">{ infoContent.title }</h1>
-            <section className="register-content">
-                <Form onSubmit={handleSubmit} className="register-form">
-                    <section className="register-form-inputs">
+            <section className="update-content">
+                <Form onSubmit={handleSubmit} className="update-form">
+                    <section className="update-form-inputs">
                         {
                             infoContent.inputs.map((item, index) => (
                                 <div key={index} className="input-group-container">
@@ -51,11 +54,12 @@ const RegisterContentComponent = ({ infoContent }) => {
                                         
                                         type = {item.type}
                                         name = {item.name}
-                                        value = {values[item.value]}
                                         label = {item.label}
+                                        value = {values[item.value]}
                                         onChange = {handleInputChange}
                                         className = "input-group"
                                         options = {item.options}
+                                        
                                     />
                                 </div>
                             ))
@@ -72,9 +76,9 @@ const RegisterContentComponent = ({ infoContent }) => {
                         <Button 
                             variant = "contained"
                             className = "clear-button"
-                            onClick={handleClear}
+                            onClick={handleBackAction}
                         >
-                            Limpiar
+                            Volver
                         </Button>
                     </section>
                 </Form>
@@ -83,4 +87,4 @@ const RegisterContentComponent = ({ infoContent }) => {
     )
 }
 
-export default RegisterContentComponent;
+export default UpdateContentComponent;

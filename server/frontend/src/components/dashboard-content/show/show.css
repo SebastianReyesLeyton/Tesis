@@ -75,8 +75,13 @@
     align-items: center;
     width: calc(100% - 0.15rem);
     height: calc(100% - 0.5rem);
-    overflow: hidden;
+    overflow: auto;
     margin: 0.25rem 0.125rem;
+}
+
+.show-container .show-content .show-table .show-table-content tr td span {
+    width: 100%;
+    text-align: center;
 }
 
 .show-container .show-content .show-table .show-table-content tr td .active-state {

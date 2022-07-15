@@ -2,6 +2,7 @@ import * as API from '../api/user/supervisor';
 
 import { successAlertState } from '../reducers/user';
 import { storeUsers } from '../reducers/users';
+import { updateObtainedUserState } from '../reducers/getUser';
 
 import error from './errors';
 
@@ -18,6 +19,27 @@ export const registerSupervisor = (userData, navigate) => async (dispatch) => {
                 break;
             default:
                 dispatch(successAlertState({ data: response.data }));
+                break;
+        }
+
+    } catch (err) {
+        dispatch(error(err, navigate));
+    }
+}
+
+export const getSupervisor = (id, navigate) => async (dispatch) => {
+
+    try {
+        
+        let response = await API.get(id);
+
+        switch (response.data.message) {
+            case "tiene refresh token":
+                localStorage.setItem('token', response.data.accessToken);
+                dispatch(getSupervisor(id, navigate));
+                break;
+            default:
+                dispatch(updateObtainedUserState({ data: response.data.user } ));
                 break;
         }
 

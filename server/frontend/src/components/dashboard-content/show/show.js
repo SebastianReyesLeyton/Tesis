@@ -4,8 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { Error, Success } from "../../alert";
 
 import { resetAlertState } from "../../../reducers/user";
-import { getSupervisors, modifySupervisorState } from "../../../actions/supervisor";
-import { resetUsers } from "../../../reducers/users";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
@@ -31,6 +29,10 @@ const ShowContentComponent = ({ infoContent }) => {
         e.preventDefault();
         dispatch(infoContent.modifyStateAction({id, newState}));
         if (alertRef.current != null) alertRef.current.hiddenAlert(Boolean(alertMessage.error) || Boolean(alertMessage.success));
+    }
+
+    const handleEditAction = (id) => () => {
+        navigate(`${infoContent.editRoute}/${id}`);
     }
 
     useEffect(() => {
@@ -86,7 +88,7 @@ const ShowContentComponent = ({ infoContent }) => {
                                     <td>
                                         <div className="actions">
                                             <button className="buttons-actions"><FontAwesomeIcon icon={faEye} /></button>
-                                            <button className="buttons-actions"><FontAwesomeIcon icon={faPen} /></button>
+                                            <button className="buttons-actions" onClick={handleEditAction(item.id)}><FontAwesomeIcon icon={faPen} /></button>
                                         </div>
                                     </td>
                                 </tr>

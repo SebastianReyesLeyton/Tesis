@@ -1,6 +1,7 @@
 import { useLocation } from "react-router-dom";
 import RegisterComponent from "./register";
 import ShowComponent from "./show";
+import UpdateComponent from "./update";
 
 const DashboardContentComponent = (props) => {
 
@@ -14,6 +15,8 @@ const DashboardContentComponent = (props) => {
         case "show":
             content = <ShowComponent user={props.user} type={location.pathname.split('/')[2]}/>
             break;
+        case "edit-user":
+            content = <UpdateComponent user={props.user} type={location.pathname.split('/')[2]}/>
         default:
             break;
     }
