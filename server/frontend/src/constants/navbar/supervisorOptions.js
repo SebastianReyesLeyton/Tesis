@@ -4,8 +4,7 @@ import {
     faHospitalUser, 
     faClipboardList,
     faFilePen,
-    faBoxArchive,
-    faUserTag
+    faBoxArchive
 } from '@fortawesome/free-solid-svg-icons';
 
 export const SupervisorOptions = {
@@ -16,14 +15,9 @@ export const SupervisorOptions = {
             link: "/register/therapist"
         },
         {
-            option: "Ver/Editar",
+            option: "Ver, editar y modificar",
             icon: <FontAwesomeIcon icon={faUsersLine} className="icon" />,
-            link: "/home"
-        },
-        {
-            option: "Modificar estado",
-            icon: <FontAwesomeIcon icon={faUserTag} className="icon" />,
-            link: "/home"
+            link: "/show/therapist"
         }
     ],
     Pruebas: [
