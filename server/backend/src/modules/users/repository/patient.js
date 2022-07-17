@@ -37,7 +37,18 @@ class PatientRepository extends UserRepository {
     }
 
     setData ( obj ) {
-        return super.setUserData( Object.assign(obj, { rol: 'paciente' }));
+        const ans = this.db.query('UPDATE user_table SET\
+                                    fullname = ?, email = ?, passcode = ?,\
+                                    docnum = ?, doctype = ? WHERE id = ? and rol = ?',[
+                                        obj.fullname,
+                                        obj.email,
+                                        obj.passcode,
+                                        obj.docnum,
+                                        obj.doctype,
+                                        obj.id,
+                                        'paciente'
+                                    ]);
+        return ans;
     }
 
     setPatientData ( obj ) {

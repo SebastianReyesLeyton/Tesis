@@ -22,7 +22,12 @@ const App = () => {
                 <Route path='/edit-user'>
                     <Route path='supervisor/:id' element={<DashboardPage />} />
                     <Route path='therapist/:id' element={<DashboardPage />} />
-                    <Route path='patient/id' element={<DashboardPage />} />
+                    <Route path='patient/:id' element={<DashboardPage />} />
+                </Route>
+                <Route path='/show-user'>
+                    <Route path='supervisor/:id' element={<DashboardPage />} />
+                    <Route path='therapist/:id' element={<DashboardPage />} />
+                    <Route path='patient/:id' element={<DashboardPage />} />
                 </Route>
             </Routes>
         </BrowserRouter>

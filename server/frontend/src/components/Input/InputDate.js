@@ -32,7 +32,7 @@ const InputDate = (props) => {
                 onChange = {handleOnChange}
                 openTo="year"
                 views={['year', 'month', 'day']}
-                renderInput={(params) => <TextField value={props.value} className = {props.className} {...params} />}
+                renderInput={(params) => <TextField value={props.value} className = {props.className} variant={props.variant} {...params} />}
             />
         </LocalizationProvider>
     )

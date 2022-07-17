@@ -10,6 +10,7 @@ const showContent = {
             offset: 0
         },
         editRoute: '/edit-user/supervisor',
+        showRoute: '/show-user/supervisor',
         getAllAction: getSupervisors,
         modifyStateAction: modifySupervisorState
     },
@@ -20,6 +21,7 @@ const showContent = {
             offset: 0
         },
         editRoute: '/edit-user/therapist',
+        showRoute: '/show-user/therapist',
         getAllAction: getTherapists,
         modifyStateAction: modifyTherapistState
     },
@@ -30,6 +32,7 @@ const showContent = {
             offset: 0
         },
         editRoute: '/edit-user/patient',
+        showRoute: '/show-user/patient',
         getAllAction: getPatients,
         modifyStateAction: modifyPatientState
     },

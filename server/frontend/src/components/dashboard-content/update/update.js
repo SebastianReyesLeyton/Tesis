@@ -8,8 +8,6 @@ import { Error, Success } from "../../alert";
 import { Button } from "@mui/material";
 
 import { resetAlertState } from "../../../reducers/user";
-import { getSupervisor } from "../../../actions/supervisor";
-
 import "./update.css";
 
 const UpdateContentComponent = ({ infoContent }) => {
@@ -19,23 +17,31 @@ const UpdateContentComponent = ({ infoContent }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const userData = useSelector((state) => state.getUser);
-    const { values, setValues, handleInputChange } = useForm(infoContent.initialValue);
+    const { values, setValues, handleInputChange } = useForm(infoContent.initialValues);
     let alertMessage = useSelector((state) => state.userRequest);
 
     useEffect(() => {
         dispatch(resetAlertState());
-        dispatch(getSupervisor(id, navigate));
+        dispatch(infoContent.getUserAction(id, navigate));
     }, []); 
 
     useEffect(() => {
-        setValues(infoContent.initialization(userData));
+        if (Object.keys(userData).length !== 0) {
+            let user = infoContent.initialization(userData);
+            setValues(user);
+        }
     }, [userData]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        dispatch(infoContent.action(values, navigate));
+        if (alertRef.current != null) alertRef.current.hiddenAlert(Boolean(alertMessage.error) || Boolean(alertMessage.success));
+        dispatch(infoContent.getUserAction(id, navigate));
     }
 
     const handleBackAction = (e) => {
+        dispatch(resetAlertState());
+        setValues(infoContent.initialValues);
         navigate(-1);
     }
 

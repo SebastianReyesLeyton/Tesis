@@ -13,14 +13,9 @@ export const TherapistOptions = {
             link: "/register/patient"
         },
         {
-            option: "Ver/Editar",
+            option: "Ver, editar y modificar",
             icon: <FontAwesomeIcon icon={faUserGroup} className="icon" />,
             link: "/show/patient"
-        },
-        {
-            option: "Modificar estado",
-            icon: <FontAwesomeIcon icon={faUserTag} className="icon" />,
-            link: "/home"
         }
     ]
 }

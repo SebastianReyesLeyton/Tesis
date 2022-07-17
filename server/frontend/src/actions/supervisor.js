@@ -25,6 +25,7 @@ export const registerSupervisor = (userData, navigate) => async (dispatch) => {
     } catch (err) {
         dispatch(error(err, navigate));
     }
+    
 }
 
 export const getSupervisor = (id, navigate) => async (dispatch) => {
@@ -46,6 +47,7 @@ export const getSupervisor = (id, navigate) => async (dispatch) => {
     } catch (err) {
         dispatch(error(err, navigate));
     }
+
 }
 
 export const getSupervisors = ({ rows, offset }, navigate) => async (dispatch) => {
@@ -67,6 +69,7 @@ export const getSupervisors = ({ rows, offset }, navigate) => async (dispatch) =
     } catch (err) {
         dispatch(error(err, navigate));
     }
+
 }
 
 export const modifySupervisorState = ({ id, newState }, navigate) => async (dispatch) => {
@@ -88,4 +91,27 @@ export const modifySupervisorState = ({ id, newState }, navigate) => async (disp
     } catch (err) {
         dispatch(error(err, navigate));
     }
+
+}
+
+export const editSupervisor = (data, navigate) => async (dispatch) => {
+    
+    try {
+        
+        let response = await API.edit(data);
+
+        switch (response.data.message) {
+            case "tiene refresh token":
+                localStorage.setItem('token', response.data.accessToken);
+                dispatch(editSupervisor(data, navigate));
+                break;
+            default:
+                dispatch(successAlertState({ data: response.data }));
+                break;
+        }
+        
+    } catch (err) {
+        dispatch(error(err, navigate));
+    }
+
 }

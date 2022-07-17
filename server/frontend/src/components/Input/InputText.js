@@ -14,6 +14,7 @@ export default function InputText (props) {
                         required={props.required}
                         onChange={props.onChange}
                         className={props.className}
+                        defaultValue={props.defaultValue}
                     />
             break;
         case 'password':

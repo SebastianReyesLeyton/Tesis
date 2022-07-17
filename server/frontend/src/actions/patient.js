@@ -4,6 +4,8 @@ import { successAlertState } from '../reducers/user';
 import { storeUsers } from '../reducers/users';
 import error from './errors';
 
+import { updateObtainedUserState } from '../reducers/getUser';
+
 export const registerPatient = (userData, navigate) => async (dispatch) => {
     try {
         
@@ -23,6 +25,28 @@ export const registerPatient = (userData, navigate) => async (dispatch) => {
     } catch (err) {
         dispatch(error(err, navigate));
     }
+}
+
+export const getPatient = (id, navigate) => async (dispatch) => {
+
+    try {
+        
+        let response = await API.get(id);
+
+        switch (response.data.message) {
+            case "tiene refresh token":
+                localStorage.setItem('token', response.data.accessToken);
+                dispatch(getPatient(id, navigate));
+                break;
+            default:
+                dispatch(updateObtainedUserState({ data: response.data.user } ));
+                break;
+        }
+
+    } catch (err) {
+        dispatch(error(err, navigate));
+    }
+
 }
 
 export const getPatients = ({ rows, offset }, navigate) => async (dispatch) => {
@@ -65,4 +89,26 @@ export const modifyPatientState = ({ id, newState }, navigate) => async (dispatc
     } catch (err) {
         dispatch(error(err, navigate));
     }
+}
+
+export const editPatient = (data, navigate) => async (dispatch) => {
+    
+    try {
+        
+        let response = await API.edit(data);
+
+        switch (response.data.message) {
+            case "tiene refresh token":
+                localStorage.setItem('token', response.data.accessToken);
+                dispatch(editPatient(data, navigate));
+                break;
+            default:
+                dispatch(successAlertState({ data: response.data }));
+                break;
+        }
+        
+    } catch (err) {
+        dispatch(error(err, navigate));
+    }
+
 }

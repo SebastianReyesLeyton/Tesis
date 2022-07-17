@@ -24,7 +24,7 @@ export const get = (id) => axios.get(
             "x-access-token": localStorage.getItem("token")
         }
     }
-)
+);
 
 export const getAll = ({ rows, offset }) => axios.get(
     `${SUPERVISOR_BASE_URL}/all/${rows}/${offset}`,
@@ -39,6 +39,18 @@ export const getAll = ({ rows, offset }) => axios.get(
 
 export const modifyState = (id, newState) => axios.get(
     `${SUPERVISOR_BASE_URL}/modify-state/${id}/${newState}`,
+    {
+        headers: {
+            "Content-Type": "multipart/form-data",
+            "x-user": JSON.parse(localStorage.getItem("user")).id,
+            "x-access-token": localStorage.getItem("token")
+        }
+    }
+);
+
+export const edit = (data) => axios.post(
+    `${SUPERVISOR_BASE_URL}/edit`,
+    data,
     {
         headers: {
             "Content-Type": "multipart/form-data",

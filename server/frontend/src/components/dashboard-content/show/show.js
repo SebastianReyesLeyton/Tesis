@@ -35,6 +35,10 @@ const ShowContentComponent = ({ infoContent }) => {
         navigate(`${infoContent.editRoute}/${id}`);
     }
 
+    const handleShowAction = (id) => () => {
+        navigate(`${infoContent.showRoute}/${id}`);
+    }
+
     useEffect(() => {
         dispatch(infoContent.getAllAction(pagRows, navigate));
     }, [alertMessage])
@@ -87,7 +91,7 @@ const ShowContentComponent = ({ infoContent }) => {
                                     </td>
                                     <td>
                                         <div className="actions">
-                                            <button className="buttons-actions"><FontAwesomeIcon icon={faEye} /></button>
+                                            <button className="buttons-actions" onClick={handleShowAction(item.id)}><FontAwesomeIcon icon={faEye} /></button>
                                             <button className="buttons-actions" onClick={handleEditAction(item.id)}><FontAwesomeIcon icon={faPen} /></button>
                                         </div>
                                     </td>
