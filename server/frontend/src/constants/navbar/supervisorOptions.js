@@ -3,7 +3,6 @@ import {
     faUsersLine, 
     faHospitalUser, 
     faClipboardList,
-    faFilePen,
     faBoxArchive
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -24,17 +23,12 @@ export const SupervisorOptions = {
         {
             option: "Crear",
             icon: <FontAwesomeIcon icon={faClipboardList} className="icon" />,
-            link: "/home"
+            link: "/create-test"
         },
         {
-            option: "Ver",
+            option: "Ver y editar",
             icon: <FontAwesomeIcon icon={faBoxArchive} className="icon" />,
-            link: "/home"
-        },
-        {
-            option: "Editar",
-            icon: <FontAwesomeIcon icon={faFilePen} className="icon" />,
-            link: "/home"
-        },
+            link: "/show-tests"
+        }
     ]
 }

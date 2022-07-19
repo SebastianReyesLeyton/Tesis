@@ -13,6 +13,8 @@ export default function CompleteInput (props) {
             return InputSelect(props);
         case 'date':
             return InputDate(props);
+        case 'multiline':
+            return InputText(props);
         default:
             break;
     }

@@ -1,6 +1,7 @@
 import { registerSupervisor } from "../../../actions/supervisor";
 import { registerTherapist } from "../../../actions/therapist";
 import { registerPatient } from "../../../actions/patient";
+import { createTest } from "../../../actions/test";
 
 const registerContent = {
     supervisor: {
@@ -173,6 +174,29 @@ const registerContent = {
                 name: 'rightHAID',
                 value: 'rightHAID',
                 label: 'Apoyo izquierdo'
+            }
+        ]
+    },
+    test: {
+        title: 'Crear prueba',
+        initialValues: {
+            name: String(),
+            description: String()
+        },
+        action: createTest,
+        inputs: [
+            {
+                type: 'text',
+                name: 'name',
+                value: 'name',
+                label: 'Nombre',
+            },
+            {
+                type: 'multiline',
+                name: 'description',
+                value: 'description',
+                maxRows: 4,
+                label: 'Descripción',
             }
         ]
     }

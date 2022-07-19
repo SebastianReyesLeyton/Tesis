@@ -57,7 +57,7 @@
     display: grid;
     overflow: auto;
     grid-template-rows: 1fr 5fr;
-    border-left: 0.22rem solid black;
+    border-left: 0.22rem solid rgba(9, 37, 44, 0.3);
     justify-content: center;
     align-items: center;
     position: relative;

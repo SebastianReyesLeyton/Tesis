@@ -15,6 +15,9 @@ const RegisterComponent = (props) => {
         case "patient":
             if (props.user.rol in {"terapeuta": 1}) content = <RegisterContentComponent infoContent={registerContent.patient} />;
             break;
+        case "create-test":
+            if (props.user.rol === "supervisor") content = <RegisterContentComponent infoContent={registerContent.test} />;
+            break;
         default:
             break;
     }

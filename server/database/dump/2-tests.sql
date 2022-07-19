@@ -126,8 +126,10 @@ CREATE TABLE cards_table (
 
 CREATE TABLE test_table (
 
-    id      INTEGER AUTO_INCREMENT,
-    tName   VARCHAR(255) NOT NULL UNIQUE,
+    id              INTEGER AUTO_INCREMENT,
+    tName           VARCHAR(255) NOT NULL UNIQUE,
+    tDescription    TEXT,
+    isEditable      TINYINT(1) NOT NULL DEFAULT 1,          
     PRIMARY KEY(id)
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

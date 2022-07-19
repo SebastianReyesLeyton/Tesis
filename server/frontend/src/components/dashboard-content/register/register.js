@@ -31,7 +31,7 @@ const RegisterContentComponent = ({ infoContent }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(values);
+        
         dispatch(infoContent.action(values, navigate));
         if (alertRef.current != null) alertRef.current.hiddenAlert(Boolean(alertMessage.error) || Boolean(alertMessage.success));
     }
@@ -56,6 +56,7 @@ const RegisterContentComponent = ({ infoContent }) => {
                                         onChange = {handleInputChange}
                                         className = "input-group"
                                         options = {item.options}
+                                        maxRows = {item.maxRows}
                                     />
                                 </div>
                             ))

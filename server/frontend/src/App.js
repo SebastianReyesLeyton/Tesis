@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { LoginPage, DashboardPage } from './components/pages';
+import { LoginPage, DashboardPage, PageNotFound } from './components/pages';
 
 const App = () => {
     
@@ -29,6 +29,9 @@ const App = () => {
                     <Route path='therapist/:id' element={<DashboardPage />} />
                     <Route path='patient/:id' element={<DashboardPage />} />
                 </Route>
+                <Route path='create-test' element={<DashboardPage />}/>
+                <Route path='show-tests' element={<DashboardPage />}/>
+                <Route path='*' element={<PageNotFound />} />
             </Routes>
         </BrowserRouter>
     );

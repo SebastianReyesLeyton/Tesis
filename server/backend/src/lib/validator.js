@@ -10,10 +10,11 @@ const integerValidator = ( number ) => {
     return Number(number);
 }
 
-const stringValidator = ( str ) => {
+const stringValidator = ( str, name='' ) => {
     
     if ( str.indexOf("'") === 0 ) throw new Error("no se admite el carácter ', favor usar doble comilla");
-
+    else if ( !str.length ) throw new Error(`campo ${name} vacio`.trim());
+    return str.trim();
 }
 
 const passwordValidator = ( password ) => {

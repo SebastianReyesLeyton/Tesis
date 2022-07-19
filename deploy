@@ -39,6 +39,10 @@ destroy () {
     sudo docker-compose down 
     sudo docker image rm mmapi rsfront
     sudo docker volume prune --force
+    
+    echo -e "[+] Removing backend db folders"
+    cd backend/src/db
+    rm -r *
     popd
 }
 
