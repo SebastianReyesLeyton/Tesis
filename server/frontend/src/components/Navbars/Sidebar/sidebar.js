@@ -18,6 +18,9 @@ const Sidebar = (props) => {
 		case "terapeuta":
 			options = Object.assign({}, navbarOptions.therapist);
 			break;
+		case "paciente":
+			options = Object.assign({}, navbarOptions.patient);
+			break;
 		default:
 			break;
 	}

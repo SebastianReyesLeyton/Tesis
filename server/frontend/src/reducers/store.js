@@ -4,6 +4,8 @@ import UserReducer from './user';
 import UsersReducer from './users';
 import GetUserReducer from './getUser';
 import ItemsReducer from './items';
+import QuestionsReducer from './getQuestions';
+import GetTestReducer from './getTest';
 
 export default configureStore({
     reducer: {
@@ -11,6 +13,8 @@ export default configureStore({
         userRequest: UserReducer,
         usersRequest: UsersReducer,
         getUser: GetUserReducer,
-        items: ItemsReducer
+        items: ItemsReducer,
+        questionsRequest: QuestionsReducer,
+        getTest: GetTestReducer
     },
 });

@@ -10,6 +10,8 @@ router.get('/all/in-progress/:rows/:offset', validateAccessToken(), controller.g
 router.get('/all/available/:rows/:offset', validateAccessToken(), controller.getPublishedTests() );
 router.get('/question-types', validateAccessToken(), controller.getQuestionTypes() );
 router.get('/publish/:test', validateAccessToken(), controller.publish() );
+router.get('/:id', validateAccessToken(), controller.getTest() );
+router.get('/:id/questions', validateAccessToken(), controller.getQuestionsByTest() );
 
 /* POST routes */
 router.post('/create', validateAccessToken(), controller.create() );

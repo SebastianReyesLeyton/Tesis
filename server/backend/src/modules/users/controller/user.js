@@ -111,6 +111,33 @@ class UserController extends Controller {
 
         }
     }
+
+    getRelations () {
+        return async ( req, res ) => {
+
+            // Get the body request
+            let body = req.body;
+
+            // Doing the validations required
+            try {
+
+                body.id = integerValidator(body.id);
+                
+            } catch (err) {
+
+                res.statusCode = BAD_REQUEST;
+                res.send({ error: err.message });
+                return ;
+
+            }
+
+            // Wait the response of user service
+            let response = await this.service.getRelations(res, body);
+
+            res.json(response);
+
+        }
+    }
 }
 
 const userController = new UserController();

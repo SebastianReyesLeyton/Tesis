@@ -91,6 +91,15 @@ class UserRepository extends Repository {
         return ans;
     }
 
+    getUserRelations ( obj, rol ) {
+        
+        const ans = (rol === 'terapeuta') ? this.db.query('SELECT id FROM relation_therapist_patient_table\
+                                       WHERE idTherapist = ?', [obj.id]) :
+                                       this.db.query('SELECT id FROM relation_therapist_patient_table\
+                                       WHERE idPatient = ?', [obj.id])
+        return ans;
+    }
+
 }
 
 

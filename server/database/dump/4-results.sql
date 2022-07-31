@@ -29,40 +29,18 @@ FLUSH PRIVILEGES;
 
 USE sitefodi_results;
 
--- Answer type table
-
-CREATE TABLE answer_type_table (
-
-    id      INTEGER AUTO_INCREMENT,
-    atype   VARCHAR(255) NOT NULL,
-    PRIMARY KEY (id)
-
-);
-
--- Aswer table
-
-CREATE TABLE answer_table (
-
-    id          INTEGER AUTO_INCREMENT,
-    idTherapy  INTEGER NOT NULL,
-    idtype      INTEGER NOT NULL,
-    PRIMARY KEY (id),
-    FOREIGN KEY (idtype) REFERENCES answer_type_table(id),
-    FOREIGN KEY (idTherapy) REFERENCES sitefodi_therapy.therapy_table(id)
-
-);
-
 -- Card answer table
 
 CREATE TABLE card_answer_table (
 
     id          INTEGER,
     idQuestion  INTEGER NOT NULL,
+    idTherapy   INTEGER NOT NULL,
     correct     ENUM('yes', 'no') NOT NULL,
     answer      VARCHAR(255) NOT NULL DEFAULT '',
     PRIMARY KEY (id),
-    FOREIGN KEY (id) REFERENCES answer_table(id),
-    FOREIGN KEY (idQuestion) REFERENCES sitefodi_tests.card_question_table(id)
+    FOREIGN KEY (idQuestion) REFERENCES sitefodi_tests.card_question_table(id),
+    FOREIGN KEY (idTherapy) REFERENCES sitefodi_therapy.therapy_table(id)
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -72,10 +50,11 @@ CREATE TABLE cards_answer_table (
 
     id          INTEGER,
     idQuestion  INTEGER NOT NULL,
+    idTherapy   INTEGER NOT NULL,
     results     JSON NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (id) REFERENCES answer_table(id),
-    FOREIGN KEY (idQuestion) REFERENCES sitefodi_tests.cards_question_table(id)
+    FOREIGN KEY (idQuestion) REFERENCES sitefodi_tests.cards_question_table(id),
+    FOREIGN KEY (idTherapy) REFERENCES sitefodi_therapy.therapy_table(id)
 
 );
 
@@ -85,20 +64,10 @@ CREATE TABLE words_answer_table (
 
     id          INTEGER,
     idQuestion  INTEGER NOT NULL,
+    idTherapy   INTEGER NOT NULL,
     results     JSON NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (id) REFERENCES answer_table(id),
-    FOREIGN KEY (idQuestion) REFERENCES sitefodi_tests.words_question_table(id)
+    FOREIGN KEY (idQuestion) REFERENCES sitefodi_tests.words_question_table(id),
+    FOREIGN KEY (idTherapy) REFERENCES sitefodi_therapy.therapy_table(id)
 
 );
-
--- -------------------------------------------------------- --
---                DATABASE DEFAULT VALUES                   --
--- -------------------------------------------------------- --
-
--- Answer types
-
-INSERT INTO answer_type_table (id, atype) VALUES 
-    ( 1, 'Carta' ),
-    ( 2, 'Cartas' ),
-    ( 3, 'Palabras' );

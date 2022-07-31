@@ -1,6 +1,7 @@
 import userRouter from "./users/routes";
 import authRouter from "./auth/routes";
 import testRouter from "./tests/routes/test";
+import therapyRouter from "./therapy/routes/therapy";
 
 class PrivateGateway {
 
@@ -22,6 +23,7 @@ class PrivateGateway {
         this.app.use('/user', this.logger(), userRouter);
         this.app.use('/auth', this.logger(), authRouter);
         this.app.use('/test', this.logger(), testRouter);
+        this.app.use('/therapy', this.logger(), therapyRouter);
         
         // Space to register routes 
         console.log('\x1b[32m[+] Gateway status: All routes registered.\x1b[0m');

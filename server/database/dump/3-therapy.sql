@@ -29,19 +29,28 @@ FLUSH PRIVILEGES;
 
 USE sitefodi_therapy;
 
--- Theraphy table
+-- Therapy table
 
 CREATE TABLE therapy_table ( 
 
     id                  INTEGER AUTO_INCREMENT,
-    urlTheraphy         TEXT NOT NULL,
+    urlTherapy          TEXT NOT NULL,
     dateT               DATETIME NOT NULL,
     idRelation          INTEGER NOT NULL,
     idTest              INTEGER,
-    test                TINYINT(1) NOT NULL DEFAULT 1,
+    stateT              ENUM('creada', 'en progreso', 'finalizada') DEFAULT 'creada',
+    questionLocation    INTEGER NOT NULL DEFAULT 1,
     PRIMARY KEY (id),
     FOREIGN KEY (idRelation) REFERENCES sitefodi_users.relation_therapist_patient_table(id),
     FOREIGN KEY (idTest) REFERENCES sitefodi_tests.test_table(id) 
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+-- Therapy event
+
+CREATE EVENT active_therapy_session 
+    ON SCHEDULE 
+        EVERY 10 SECOND 
+        STARTS CURRENT_TIMESTAMP
+    COMMENT 'Active the therapy session when the date in completed'
+    DO UPDATE therapy_table SET stateT = 'en progreso' WHERE dateT <= NOW() AND stateT = 'creada';

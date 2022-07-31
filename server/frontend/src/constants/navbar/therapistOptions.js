@@ -2,7 +2,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
     faUser, 
     faUserGroup,
-    faUserTag
+    faCalendarCheck,
+    faCalendarDays
 } from '@fortawesome/free-solid-svg-icons';
 
 export const TherapistOptions = {
@@ -16,6 +17,18 @@ export const TherapistOptions = {
             option: "Ver, editar y modificar",
             icon: <FontAwesomeIcon icon={faUserGroup} className="icon" />,
             link: "/show/patient"
+        }
+    ],
+    Terapia: [
+        {
+            option: "Agendar",
+            icon: <FontAwesomeIcon icon={faCalendarCheck} className="icon" />,
+            link: "/add-therapy"
+        },
+        {
+            option: "Ver",
+            icon: <FontAwesomeIcon icon={faCalendarDays} className="icon" />,
+            link: "/schedule-therapies"
         }
     ]
 }

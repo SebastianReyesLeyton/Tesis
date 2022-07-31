@@ -2,14 +2,11 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TextField } from '@mui/material';
-import { useState } from 'react';
 
 const InputDate = (props) => {
 
-    const [ value, setValue ] = useState(null);
-
     const handleOnChange = (e) => {
-        setValue(e);
+        
         let d = new Date(e),
             month = '' + (d.getMonth() + 1),
             day = '' + d.getDate(),

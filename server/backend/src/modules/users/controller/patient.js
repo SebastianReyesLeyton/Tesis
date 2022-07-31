@@ -288,7 +288,7 @@ class PatientController extends Controller {
             }
 
             // Check that relation exists
-            check = await this.service.getRelation( res, { idTherapist: req.tokenData.id, idPatient: body.id });
+            check = await this.service.getRelation( res, { idTherapist: req.tokenData.id, idPatient: body.id } );
             if ( res.statusCode !== SUCCESS ) {
                 res.statusCode = FORBIDDEN;
                 res.json(check);
@@ -305,6 +305,44 @@ class PatientController extends Controller {
             response = await this.service.modifyState( res, body );
 
             res.json( ( res.statusCode === SUCCESS ) ? { success: response.message} : { error: response.message });
+        }
+    }
+
+    getRelation () {
+
+        const permission = Permissions('therapist');
+
+        return async ( req, res ) => {
+
+            // Get the body request
+            let body = { patient: req.body.patient };
+
+            // Permission
+            let check = permission(req.tokenData.rol);
+            if ( Boolean(check) ) {
+                res.statusCode = FORBIDDEN;
+                res.json(check);
+                return ;
+            }
+
+            // Doing the required validations
+            try {
+                
+                body.patient = integerValidator(body.patient);
+
+            } catch (err) {
+
+                res.statusCode = BAD_REQUEST;
+                res.json({ error: err.message });
+                return ;
+                
+            }
+
+            // Wait the response of service
+            let response = await this.service.getRelation(res, { idTherapist: req.tokenData.id, idPatient: body.patient } );
+
+            res.json(response);
+
         }
     }
 

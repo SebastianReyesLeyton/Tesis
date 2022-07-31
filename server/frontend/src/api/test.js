@@ -24,6 +24,17 @@ export const getInProgressTests = ({rows, offset}) => axios.get(
     }
 );
 
+export const getAvailableTests = ({rows, offset}) => axios.get(
+    `${TEST_BASE_URL}/all/available/${rows}/${offset}`,
+    {
+        headers: {
+            "Content-Type": "multipart/form-data",
+            "x-user": JSON.parse(localStorage.getItem("user")).id,
+            "x-access-token": localStorage.getItem("token")
+        }
+    }
+)
+
 export const getQuestionTypes = () => axios.get(
     `${TEST_BASE_URL}/question-types`,
     {
@@ -37,6 +48,40 @@ export const getQuestionTypes = () => axios.get(
 
 export const publish = (id) => axios.get(
     `${TEST_BASE_URL}/publish/${id}`,
+    {
+        headers: {
+            "Content-Type": "multipart/form-data",
+            "x-user": JSON.parse(localStorage.getItem("user")).id,
+            "x-access-token": localStorage.getItem("token")
+        }
+    }
+);
+
+export const getTestById = (id) => axios.get(
+    `${TEST_BASE_URL}/${id}`,
+    {
+        headers: {
+            "Content-Type": "multipart/form-data",
+            "x-user": JSON.parse(localStorage.getItem("user")).id,
+            "x-access-token": localStorage.getItem("token")
+        }
+    }
+);
+
+export const addQuestion = (idTest, idQuestion, data) => axios.post(
+    `${TEST_BASE_URL}/${idTest}/add-question/${idQuestion}`,
+    data,
+    {
+        headers: {
+            "Content-Type": "multipart/form-data",
+            "x-user": JSON.parse(localStorage.getItem("user")).id,
+            "x-access-token": localStorage.getItem("token")
+        }
+    }
+);
+
+export const getQuestionsByTest = (idTest) => axios.get(
+    `${TEST_BASE_URL}/${idTest}/questions`,
     {
         headers: {
             "Content-Type": "multipart/form-data",

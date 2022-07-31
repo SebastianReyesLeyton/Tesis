@@ -13,6 +13,7 @@ const ShowComponent = (props) => {
             break;
         case "patient":
             if (props.user.rol === "terapeuta") content = <ShowContentComponent infoContent={showContent.patient} />;
+            break;
         default:
             break;
     }

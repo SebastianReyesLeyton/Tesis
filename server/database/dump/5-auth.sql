@@ -43,7 +43,7 @@ CREATE TABLE refresh_tokens_table (
 
 CREATE EVENT remove_refresh_tokens 
     ON SCHEDULE 
-        EVERY 30 SECOND 
+        EVERY 10 SECOND 
         STARTS CURRENT_TIMESTAMP
     COMMENT 'Remove refresh tokens when their own when expire in'
     DO DELETE FROM refresh_tokens_table WHERE expire <= NOW();

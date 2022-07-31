@@ -148,6 +148,45 @@ class TestController extends Controller {
 
     }
 
+    getTest () {
+
+        const permission = Permissions('supervisor');
+
+        return async ( req, res ) => {
+
+            // Get the request parameters
+            let body = { id: req.params.id }
+
+            // Doing the required validations
+            try {
+                
+                body.id = integerValidator(body.id);
+
+            } catch (err) {
+                
+                res.statusCode = BAD_REQUEST;
+                res.json({ error: err.message });
+                return ;
+
+            }
+
+            // Permissions
+            let check = permission(req.tokenData.rol);
+            if ( Boolean(check) ) {
+                res.statusCode = FORBIDDEN;
+                res.json(check);
+                return ;
+            }
+
+            // Wait the response of test service
+            let response = await this.service.getTest( res, body );
+
+            // Send the response
+            res.json(response);
+
+        }
+    }
+
     publish () {
 
         const permission = Permissions('supervisor');
@@ -188,20 +227,79 @@ class TestController extends Controller {
     }
 
     addQuestion () {
+
+        const permission = Permissions('supervisor');
+
         return async ( req, res ) => {
 
             // Get the body request and request parameters
             let body = req.body,
                 parameters = { idTest: req.params.test, idQuestionType: req.params.questionType };
             
+            // Permissions
+            let check = permission(req.tokenData.rol);
+            if ( Boolean(check) ) {
+                res.statusCode = FORBIDDEN;
+                res.json(check);
+                return ;
+            }
+
             // Doing some validations
             try {
                 
-                
+                parameters.idTest = integerValidator(parameters.idTest);
+                parameters.idQuestionType = integerValidator(parameters.idQuestionType);
 
             } catch (err) {
                 
+                res.statusCode = BAD_REQUEST;
+                res.json({ error: err.message });
+                return ;
+
             }
+
+            // Wait the response of test service
+            let response = await this.service.addQuestion( res, body, parameters );
+
+            res.json( res.statusCode === SUCCESS ? { success: response.message } : { error: response.message });
+        }
+    }
+
+    getQuestionsByTest () {
+
+        const permission = Permissions('supervisor');
+
+        return async ( req, res ) => {
+
+            // Get the request parameters
+            let body = { idTest: req.params.id };
+
+            // Permissions
+            let check = permission(req.tokenData.rol);
+            if ( Boolean(check) ) {
+                res.statusCode = FORBIDDEN;
+                res.json(check);
+                return ;
+            }
+
+            // Doing some validations
+            try {
+               
+                body.idTest = integerValidator(body.idTest);
+                
+            } catch (err) {
+                
+                res.statusCode = BAD_REQUEST;
+                res.json({ error: err.message });
+                return ;
+
+            }
+
+            // Wait the response of test service
+            let response = await this.service.getQuestionsByTest( res, body );
+
+            res.json(response);
+
         }
     }
 

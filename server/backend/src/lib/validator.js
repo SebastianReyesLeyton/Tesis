@@ -39,7 +39,10 @@ const dateValidator = ( d ) => {
 
     const regex = /^\d{4}\/\d{2}\/\d{2}$/;
     if ( d.match(regex) === null ) throw new Error("formato de fecha no válido");
-    
+    dateValueValidator(d);
+}
+
+const dateValueValidator = ( d ) => {
     const isoFormat = d.split('/').join('-');
     const date = new Date(isoFormat);
     const timestamp = date.getTime();
@@ -82,6 +85,6 @@ const dtoValidator = ( dto, obj ) => {
     }
 }
 
-export { dateValidator, docNumValidator, dtoValidator,  emailValidator, integerValidator, isActiveValidator, stringValidator, passwordValidator, };
+export { dateValidator, dateValueValidator, docNumValidator, dtoValidator,  emailValidator, integerValidator, isActiveValidator, stringValidator, passwordValidator, };
 
 // Regex: https://www.w3resource.com/javascript/form/email-validation.php

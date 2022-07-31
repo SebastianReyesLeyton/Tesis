@@ -2,6 +2,8 @@ import * as API from "../api/test";
 
 import { successAlertState } from "../reducers/user";
 import { storeItems } from "../reducers/items";
+import { updateObtainedTestState } from "../reducers/getTest";
+import { storeQuestions } from "../reducers/getQuestions";
 
 import error from './errors';
 
@@ -48,6 +50,27 @@ export const getInProgressTests = ({ rows, offset }, navigate) => async (dispatc
     }
 } 
 
+export const getAvailableTests = ({ rows, offset }, navigate) => async (dispatch) => {
+
+    try {
+
+        let response = await API.getAvailableTests({ rows, offset });
+
+        switch (response.data.message) {
+            case "tiene refresh token":
+                localStorage.setItem('token', response.data.accessToken);
+                dispatch(getAvailableTests({ rows, offset }, navigate));
+                break;
+            default:
+                dispatch(storeItems({ data: response.data.tests}));
+                break;
+        }
+
+    } catch (err) {
+        dispatch(error(err, navigate));
+    }
+} 
+
 export const getQuestionTypes = (navigate) => async (dispatch) => {
 
     try {
@@ -60,7 +83,29 @@ export const getQuestionTypes = (navigate) => async (dispatch) => {
                 dispatch(getQuestionTypes(navigate));
                 break;
             default:
-                dispatch(storeItems({ data: response.data.tests }));
+                dispatch(storeItems({ data: response.data.types }));
+                break;
+        }
+
+    } catch (err) {
+        dispatch(error(err, navigate));
+    }
+
+}
+
+export const getTestById = (id, navigate) => async (dispatch) => {
+
+    try {
+        
+        let response = await API.getTestById(id);
+
+        switch (response.data.message) {
+            case "tiene refresh token":
+                localStorage.setItem('token', response.data.accessToken);
+                dispatch(getTestById(id, navigate));
+                break;
+            default:
+                dispatch(updateObtainedTestState({ data: response.data.test }));
                 break;
         }
 
@@ -91,3 +136,47 @@ export const publishTest = (id, navigate) => async (dispatch) => {
     }
 
 } 
+
+export const addQuestion = (idTest, idQuestion, data, navigate) => async (dispatch) => {
+
+    try {
+        
+        let response = await API.addQuestion(idTest, idQuestion, data);
+
+        switch (response.data.message) {
+            case "tiene refresh token":
+                localStorage.setItem('token', response.data.accessToken);
+                dispatch(addQuestion(idTest, idQuestion, data, navigate));
+                break;
+            default:
+                dispatch(successAlertState({ data: response.data }));
+                break;
+        }
+
+    } catch (err) {
+        dispatch(error(err, navigate));
+    }
+
+}
+
+export const getQuestionsByTest = (id, navigate) => async (dispatch) => {
+
+    try {
+        
+        let response = await API.getQuestionsByTest(id);
+
+        switch (response.data.message) {
+            case "tiene refresh token":
+                localStorage.setItem('token', response.data.accessToken);
+                dispatch(getQuestionsByTest(id, navigate));
+                break;
+            default:
+                dispatch(storeQuestions({ data: response.data.questions }));
+                break;
+        }
+
+    } catch (err) {
+        dispatch(error(err, navigate));
+    }
+
+}

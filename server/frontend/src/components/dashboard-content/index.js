@@ -4,6 +4,10 @@ import ShowComponent from "./show";
 import UpdateComponent from "./update";
 import ShowUserComponent from "./show-user";
 import ShowTestsComponent from "./show-tests";
+import ShowTestComponent from "./show-test";
+import QuestionFormComponent from "./questions";
+import TherapyComponent from "./therapy";
+import TherapistComponent from "./therapies";
 
 const DashboardContentComponent = (props) => {
 
@@ -28,6 +32,18 @@ const DashboardContentComponent = (props) => {
             break;
         case "show-tests":
             content = <ShowTestsComponent user={props.user} />
+            break;
+        case "show-test":
+            content = <ShowTestComponent user={props.user} />
+            break;
+        case "add-question":
+            content = <QuestionFormComponent user={props.user} />
+            break;
+        case "add-therapy":
+            content = <TherapyComponent user={props.user} />
+            break;
+        case "schedule-therapies":
+            content = <TherapistComponent user={props.user} />
             break;
         default:
             break;

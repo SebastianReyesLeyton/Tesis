@@ -34,7 +34,7 @@ USE sitefodi_tests;
 CREATE TABLE images_table (
 
     id      INTEGER AUTO_INCREMENT,
-    imgURL  TEXT NOT NULL,
+    imgURL  LONGTEXT NOT NULL,
     PRIMARY KEY (id)
     
 );
@@ -84,7 +84,7 @@ CREATE TABLE card_question_table (
 CREATE TABLE words_question_table (
 
     id              INTEGER,
-    pName           VARCHAR(255) NOT NULL DEFAULT 'Pregunta tipo palabras', 
+    patientTitle    VARCHAR(255) NOT NULL DEFAULT 'Pregunta tipo palabras', 
     pDescription    VARCHAR(255) NOT NULL DEFAULT 'Repite la palabra que el terapeuta te dirá',
     words           JSON NOT NULL,
     yesValue        INTEGER NOT NULL DEFAULT 1,
@@ -99,28 +99,15 @@ CREATE TABLE words_question_table (
 CREATE TABLE cards_question_table (
 
     id              INTEGER,
-    pName           VARCHAR(255) NOT NULL DEFAULT 'Pregunta tipo cartas',
+    patientTitle    VARCHAR(255) NOT NULL DEFAULT 'JUego de cartas',
     rounds          INTEGER NOT NULL DEFAULT 1 CHECK( rounds > 0 ),
+    imgs            JSON NOT NULL,
     correctValue    INTEGER NOT NULL DEFAULT 1,
     wrongValue      INTEGER NOT NULL DEFAULT 0,
     PRIMARY KEY (id),
     FOREIGN KEY (id) REFERENCES question_table(id)
 
 );
-
--- Cards table
-
-CREATE TABLE cards_table (
-
-    id          INTEGER AUTO_INCREMENT,
-    idQuestion  INTEGER NOT NULL,
-    img         INTEGER NOT NULL,
-    word        VARCHAR(100) NOT NULL DEFAULT '',
-    PRIMARY KEY (id),
-    FOREIGN KEY (img) REFERENCES images_table(id),
-    FOREIGN KEY (idQuestion) REFERENCES cards_question_table(id)
-
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Test table
 
@@ -141,7 +128,7 @@ CREATE TABLE test_questions_table (
     idTest          INTEGER,
     idQuestion      INTEGER,
     questionOrder   INTEGER AUTO_INCREMENT,
-    PRIMARY KEY (idTest, idQuestion, questionOrder),
+    PRIMARY KEY (idTest, questionOrder),
     FOREIGN KEY (idTest) REFERENCES test_table(id),
     FOREIGN KEY (idQuestion) REFERENCES question_table(id)
 

@@ -216,6 +216,22 @@ class UserService extends Service {
 
     }
 
+    async getRelations ( res, obj ) {
+
+        // Define the default values
+        let ans = { message: 'encontrados' };
+        res.statusCode = SUCCESS;
+        
+        // Wait the response of user repository
+        let response = await this.repository.getUserRelations({ id: obj.id }, obj.rol);
+
+        // Add the response to answer
+        ans.relations = response;
+
+        return ans;
+
+    }
+
 }
 
 export default UserService;

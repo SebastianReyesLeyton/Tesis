@@ -22,3 +22,7 @@ export const DTO_UPDATE_PATIENT = {
     rightHAID: String(),
     dateofBirth: String()
 }
+
+export const DTO_GET_RELATION = {
+    patient: String()
+}

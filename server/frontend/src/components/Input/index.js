@@ -1,6 +1,8 @@
 import InputText from "./InputText";
 import InputSelect from "./InputSelect";
 import InputDate from "./InputDate";
+import InputFile from "./InputFile";
+import InputDateTime from "./InputDateTime";
 
 export default function CompleteInput (props) {
 
@@ -15,6 +17,12 @@ export default function CompleteInput (props) {
             return InputDate(props);
         case 'multiline':
             return InputText(props);
+        case 'file':
+            return InputFile(props);
+        case 'number':
+            return InputText(props);
+        case 'datetime':
+            return InputDateTime(props);
         default:
             break;
     }

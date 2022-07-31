@@ -42,8 +42,21 @@ class TestRepository extends Repository {
         return ans;
     }
 
+    getQuestionById ( obj ) {
+        const ans = this.db.query('SELECT * FROM question_type_table WHERE id = ?', [ obj.id ]);
+        return ans;
+    }
+
     getQuestionTypes ( ) {
         const ans = this.db.query('SELECT * FROM question_type_table');
+        return ans;
+    }
+
+    getQuestions ( obj ) {
+        const ans = this.db.query('SELECT idTest, idQuestion, questionOrder, qtype FROM test_questions_table\
+                                   INNER JOIN question_table ON question_table.id = test_questions_table.idQuestion\
+                                   INNER JOIN question_type_table ON question_type_table.id = question_table.idtype\
+                                   WHERE idTest = ? ORDER BY questionOrder', [ obj.idTest ]);
         return ans;
     }
 
@@ -52,6 +65,37 @@ class TestRepository extends Repository {
             0,
             obj.id
         ]);
+        return ans;
+    }
+
+    createQuestion ( obj ) {
+        const ans = this.db.query('INSERT INTO question_table (idtype) VALUES (?)', [ obj.idtype ]);
+        return ans;
+    }
+
+    createCardQuestion ( obj ) {
+        const ans = this.db.query(`INSERT INTO card_question_table (id, therapistTitle, patientTitle, cardnameT, cardnameP, img, yesValue, noValue)\
+                                   VALUES (?, ${obj.therapistTitle !== '' ? `'${obj.therapistTitle}'` : 'DEFAULT'}, ${obj.patientTitle !== '' ? `'${obj.patientTitle}'` : 'DEFAULT'}, ?, ?, ?, ?, ?)`, [
+                                    obj.id,
+                                    obj.cardnameT,
+                                    obj.cardnameP,
+                                    obj.img,
+                                    obj.yesValue,
+                                    obj.noValue
+                                   ]);
+        return ans;
+    }
+
+    addQuestion ( obj ) {
+        const ans = this.db.query('INSERT INTO test_questions_table (idTest, idQuestion) VALUES (?, ?)',[
+            obj.idTest,
+            obj.idQuestion
+        ]);
+        return ans;
+    }
+
+    storeImage ( obj ) {
+        const ans = this.db.query('INSERT INTO images_table (imgURL) VALUES (?)', [ obj.imgURL ]);
         return ans;
     }
 

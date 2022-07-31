@@ -20,6 +20,8 @@ services:
       - database
     volumes:
       - ./frontend:/usr/src/app
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
     command: ["npm", "start"]
 
   # Backend container
@@ -39,6 +41,8 @@ services:
       - database
     volumes:
       - ./backend/:/usr/src/app
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
     command: ["npm", "run", "dev"]
 
   # Database container
@@ -53,3 +57,5 @@ services:
     volumes:
       - ./database/dump:/docker-entrypoint-initdb.d
       - ./database/mysql.conf.d:/etc/mysql/mysql.conf.d
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro

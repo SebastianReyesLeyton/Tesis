@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { LoginPage, DashboardPage, PageNotFound } from './components/pages';
 
 const App = () => {
-    
 
     return (
         <BrowserRouter>
@@ -31,6 +30,10 @@ const App = () => {
                 </Route>
                 <Route path='create-test' element={<DashboardPage />}/>
                 <Route path='show-tests' element={<DashboardPage />}/>
+                <Route path='show-test/:id' element={<DashboardPage />}/>
+                <Route path='add-question/:idQuestion/:idTest' element={<DashboardPage />}/>
+                <Route path='add-therapy' element={<DashboardPage />}/>
+                <Route path='schedule-therapies' element={<DashboardPage />}/>
                 <Route path='*' element={<PageNotFound />} />
             </Routes>
         </BrowserRouter>
