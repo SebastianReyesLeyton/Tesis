@@ -99,6 +99,29 @@ class TestRepository extends Repository {
         return ans;
     }
 
+    getNumberOfQuestions ( obj ) {
+        const ans = this.db.query('SELECT MAX(questionOrder) FROM test_questions_table WHERE idTest = ?', [obj.idTest]);
+        return ans;
+    }
+
+    getTestQuestion ( obj ) {
+        const ans = this.db.query('SELECT idQuestion, qtype FROM test_questions_table\
+                                   INNER JOIN question_table ON test_questions_table.idQuestion = question_table.id\
+                                   INNER JOIN question_type_table ON question_table.idtype = question_type_table.id\
+                                   WHERE idTest = ? AND questionOrder = ?', [
+                                    obj.idTest,
+                                    obj.currentQuestion
+                                   ]);
+        return ans;
+    }
+
+    getCardQuestion ( obj ) {
+        const ans = this.db.query('SELECT * FROM card_question_table INNER JOIN images_table\
+                                   ON card_question_table.img = images_table.id\
+                                   WHERE card_question_table.id = ?', [obj.id]);
+        return ans;
+    }
+
 }
 
 export default TestRepository;

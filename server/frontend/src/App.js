@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { LoginPage, DashboardPage, PageNotFound } from './components/pages';
+import GamePage from './components/pages/game/game';
 
 const App = () => {
 
@@ -34,6 +35,7 @@ const App = () => {
                 <Route path='add-question/:idQuestion/:idTest' element={<DashboardPage />}/>
                 <Route path='add-therapy' element={<DashboardPage />}/>
                 <Route path='schedule-therapies' element={<DashboardPage />}/>
+                <Route path='therapy/:idTherapy/test/:idTest/question/:currentQuestion' element={<GamePage />}/>
                 <Route path='*' element={<PageNotFound />} />
             </Routes>
         </BrowserRouter>

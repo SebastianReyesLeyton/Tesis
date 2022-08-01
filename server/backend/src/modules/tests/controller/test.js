@@ -303,6 +303,63 @@ class TestController extends Controller {
         }
     }
 
+    getNumberOfQuestionsByTest () {
+        return async ( req, res ) => {
+
+            // Get the request params
+            let body = { idTest: req.params.id }
+
+            // Doing some validations
+            try {
+               
+                body.idTest = integerValidator(body.idTest);
+                
+            } catch (err) {
+                
+                res.statusCode = BAD_REQUEST;
+                res.json({ error: err.message });
+                return ;
+
+            }
+
+            // Wait the response of test service
+            let response = await this.service.getNumberOfQuestionsByTest( res, body );
+
+            res.json(response);
+
+        }
+    }
+
+    getQuestion () {
+        return async ( req, res ) => {
+
+            // Get the request params
+            let body = { idTest: req.params.id, currentQuestion: req.params.currentQuestion }
+
+            // Doing some validations
+            try {
+               
+                body.idTest = integerValidator(body.idTest);
+                body.currentQuestion = integerValidator(body.currentQuestion);
+                
+            } catch (err) {
+                
+                res.statusCode = BAD_REQUEST;
+                res.json({ error: err.message });
+                return ;
+
+            }
+
+            // Wait the response of test service
+            let response = await this.service.getQuestion( res, body );
+
+            console.log(response);
+
+            res.json(response)
+
+        }
+    }
+
 }
 
 const testController = new TestController();

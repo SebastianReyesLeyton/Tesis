@@ -23,6 +23,16 @@ const TherapiesContentComponent = () => {
         dispatch(getNotFinishedTherapy({ rows: 10, offset: 0 }, navigate));
     }, [])
 
+    const handleFinishAction = (e) => {
+
+    } 
+
+    const handleEntryAction = (therapy, test, question) => (e) => {
+        navigate(`/therapy/${therapy}/test/${test}/question/${question}`);
+    }
+
+    console.log(therapies);
+
     return (
         <div className="therapies-container">
             <h1 className="title">Sesiones programadas</h1>
@@ -49,13 +59,13 @@ const TherapiesContentComponent = () => {
                                                 }
                                                 { item.test !== -1 ? 
                                                         new Date(item.date) < new Date() && 
-                                                        <Button className="button">Entrar</Button> :
-                                                    <Button className="button">Finalizar</Button>
+                                                        <Button className="button" onClick={handleEntryAction(item.id, item.test, item.currentQuestion)}>Entrar</Button> :
+                                                    <Button className="button" onClick={handleFinishAction}>Finalizar</Button>
                                                 }
                                             </div>
                                         </>
                                         :
-                                        <Button className="button">Finalizar</Button>
+                                        <Button className="button" onClick={handleFinishAction}>Finalizar</Button>
                                 }
                             </section> 
                         </div>

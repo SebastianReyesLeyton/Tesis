@@ -90,3 +90,25 @@ export const getQuestionsByTest = (idTest) => axios.get(
         }
     }
 )
+
+export const getNumberOfQuestion = (idTest) => axios.get(
+    `${TEST_BASE_URL}/${idTest}/number-of-questions`,
+    {
+        headers: {
+            "Content-Type": "multipart/form-data",
+            "x-user": JSON.parse(localStorage.getItem("user")).id,
+            "x-access-token": localStorage.getItem("token")
+        }
+    }
+)
+
+export const getQuestion = (idTest, currentQuestion) => axios.get(
+    `${TEST_BASE_URL}/${idTest}/question-number/${currentQuestion}`,
+    {
+        headers: {
+            "Content-Type": "multipart/form-data",
+            "x-user": JSON.parse(localStorage.getItem("user")).id,
+            "x-access-token": localStorage.getItem("token")
+        }
+    }
+)

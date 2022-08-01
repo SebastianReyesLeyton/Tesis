@@ -6,6 +6,7 @@ import GetUserReducer from './getUser';
 import ItemsReducer from './items';
 import QuestionsReducer from './getQuestions';
 import GetTestReducer from './getTest';
+import GameReducer from './game';
 
 export default configureStore({
     reducer: {
@@ -15,6 +16,7 @@ export default configureStore({
         getUser: GetUserReducer,
         items: ItemsReducer,
         questionsRequest: QuestionsReducer,
-        getTest: GetTestReducer
+        getTest: GetTestReducer,
+        game: GameReducer
     },
 });

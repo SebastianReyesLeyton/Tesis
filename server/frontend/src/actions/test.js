@@ -4,6 +4,7 @@ import { successAlertState } from "../reducers/user";
 import { storeItems } from "../reducers/items";
 import { updateObtainedTestState } from "../reducers/getTest";
 import { storeQuestions } from "../reducers/getQuestions";
+import { setNumQuestions, setNewQuestion } from "../reducers/game";
 
 import error from './errors';
 
@@ -172,6 +173,51 @@ export const getQuestionsByTest = (id, navigate) => async (dispatch) => {
                 break;
             default:
                 dispatch(storeQuestions({ data: response.data.questions }));
+                break;
+        }
+
+    } catch (err) {
+        dispatch(error(err, navigate));
+    }
+
+}
+
+export const getNumberOfQuestion = (id, navigate) => async (dispatch) => {
+
+    try {
+        
+        let response = await API.getNumberOfQuestion(id);
+
+        switch (response.data.message) {
+            case "tiene refresh token":
+                localStorage.setItem('token', response.data.accessToken);
+                dispatch(getNumberOfQuestion(id, navigate));
+                break;
+            default:
+                dispatch(setNumQuestions({ data: response.data.quantity }));
+                break;
+        }
+
+    } catch (err) {
+        dispatch(error(err, navigate));
+    }
+
+} 
+
+export const getQuestion = (idTest, currentQuestion, navigate) => async (dispatch) => {
+
+    try {
+        
+        let response = await API.getQuestion(idTest, currentQuestion);
+        console.log(response); 
+
+        switch (response.data.message) {
+            case "tiene refresh token":
+                localStorage.setItem('token', response.data.accessToken);
+                dispatch(getQuestion(idTest, currentQuestion, navigate));
+                break;
+            default:
+                dispatch(setNewQuestion({ data: response.data.question }));
                 break;
         }
 

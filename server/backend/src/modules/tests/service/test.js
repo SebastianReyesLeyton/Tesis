@@ -347,6 +347,61 @@ class TestService extends Service {
 
     }
 
+    async getNumberOfQuestionsByTest ( res, obj ) {
+
+        // Define the default values
+        let ans = { message: 'valor encontrado' };
+        res.statusCode = SUCCESS;
+
+        // Wait the response of repository
+        let response = await this.repository.getNumberOfQuestions( obj );
+
+        if ( response.length === 0 ) {
+            ans.message = 'prueba no encontrada';
+            res.statusCode = BAD_REQUEST;
+        } else {
+            ans.quantity = response[0]['MAX(questionOrder)'];
+        }
+
+        return ans;
+
+    }
+
+    async getQuestion ( res, obj ) {
+
+        // Define the default values
+        let ans = { message: 'pregunta encontrada' };
+        res.statusCode = SUCCESS;
+
+        // Wait the response of repository
+        let response = await this.repository.getTestQuestion(obj);
+
+        if ( response.length === 0 ) {
+            res.statusCode = BAD_REQUEST;
+            return { message: 'error en los parámetro suministrados' }
+        } 
+
+        const questionType = response[0].qtype;
+
+        switch (response[0].qtype) {
+            case 'Carta':
+                response = await this.repository.getCardQuestion({ id: response[0].idQuestion })
+                break;
+            default:
+                break;
+        }
+
+        if ( response.length === 0 ) {
+            res.statusCode = INTERNAL_ERROR;
+            return { message: 'error en la base de datos' }
+        } 
+
+        ans.question = Object.assign({type: questionType}, response[0]);
+
+        return ans;
+
+    }
+
 }
 
 export default TestService;
