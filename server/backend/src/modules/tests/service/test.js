@@ -229,6 +229,8 @@ class TestService extends Service {
             return { message: 'no se pudo crear la pregunta' };
         }
 
+        console.log(response)
+
         // Get the new question id
         const questionId = response.insertId;
 
@@ -239,6 +241,8 @@ class TestService extends Service {
             console.log(response);
             return { message: 'no se pudo registrar la pregunta' };
         }
+
+        console.log(response);
 
         // Validate the body request according to question type name
         try {
@@ -269,6 +273,8 @@ class TestService extends Service {
                     return { message: 'no se pudo almacenar la imagen' };
                 }
 
+                console.log(response, questionId);
+
                 // Get the image id
                 const imageId = response.insertId;
 
@@ -278,13 +284,16 @@ class TestService extends Service {
                     this.mapper.map( {}, DTO_ADD_CARD_QUESTION_MYSQL, (dto) => {
 
                         dto.id = questionId;
-                        dto.therapistTitle = UTF8.decode(obj.therapistTitle);
-                        dto.patientTitle = UTF8.decode(obj.patientTitle);
-                        dto.cardnameT = UTF8.decode(obj.therapistCardName);
-                        dto.cardnameP = UTF8.decode(obj.patientCardName);
+                        dto.therapistTitle = (obj.therapistTitle);
+                        dto.patientTitle = (obj.patientTitle);
+                        dto.cardnameT = obj.therapistCardName;
+                        dto.cardnameP = (obj.patientCardName);
+                        console.log(dto);
                         dto.img = imageId
                         dto.yesValue = obj.yes;
                         dto.noValue = obj.no;
+
+                        console.log('dto',dto);
 
                         return dto;
                     } );
@@ -292,6 +301,8 @@ class TestService extends Service {
                 } catch (err) {
                     console.log(err);
                 }
+
+                console.log(this.mapper.obj);
 
                 // Store the question info
                 response = await this.repository.createCardQuestion( this.mapper.obj );

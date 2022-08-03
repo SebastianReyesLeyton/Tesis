@@ -11,13 +11,9 @@ const CardQuestionTherapistView = ({ infoContent }) => {
     const { values, setValues, handleInputChange } = useForm({ correct: 'yes', answer: ''});
     const handleSubmit = (e) => {
         e.preventDefault();
-        infoContent.action(e);
         infoContent.nextAction();
+        infoContent.action();
     }
-
-    useEffect(() => {
-        
-    }, [])
 
     return (
         <div className="card-question-container">

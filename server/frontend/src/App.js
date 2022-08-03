@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { LoginPage, DashboardPage, PageNotFound } from './components/pages';
-import GamePage from './components/pages/game/game';
+import { LoginPage, DashboardPage, PageNotFound, GamePage } from './components/pages';
 
 const App = () => {
 

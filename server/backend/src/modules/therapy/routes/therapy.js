@@ -7,6 +7,7 @@ const controller = TherapyController;
 
 /* GET routes */
 router.get('/all/not-finished/:rows/:offset', validateAccessToken(), controller.getNotFinished() );
+router.get('/:idTherapy/update-current-question/:questionLocation', validateAccessToken(), controller.updateQuestionLocation() );
 
 /* POST routes */
 router.post('/schedule', validateAccessToken(), controller.schedule() );

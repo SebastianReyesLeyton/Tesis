@@ -85,6 +85,34 @@ class TherapyController extends Controller {
         }
     }
 
+    updateQuestionLocation () {
+        return async ( req, res ) => {
+
+            // Get request params
+            let body = { id: req.params.idTherapy, questionLocation: req.params.currentQuestion };
+
+            // Doing the required validations
+            try {
+                
+                body.id = integerValidator(body.id);
+                body.questionLocation = integerValidator(body.questionLocation);
+
+            } catch (err) {
+                
+                res.statusCode = BAD_REQUEST;
+                res.json( Boolean(err.message) ? { error: err.message } : { error: err.error } );
+                return ;
+
+            }
+
+            // Wait the response of therapy service
+            let response = await this.service.updateQuestionLocation( res, body );
+
+            res.json( res.statusCode === SUCCESS ? { success: response.message} : { error: response.message});
+
+        }
+    }
+
 }
 
 const therapyController = new TherapyController();

@@ -20,9 +20,7 @@ const GameContentComponent = (props) => {
             break;
     }
 
-    return (
-        content
-    )
+    return content
 }
 
 export default GameContentComponent;

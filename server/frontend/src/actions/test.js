@@ -209,7 +209,7 @@ export const getQuestion = (idTest, currentQuestion, navigate) => async (dispatc
     try {
         
         let response = await API.getQuestion(idTest, currentQuestion);
-        console.log(response); 
+        console.log('Question', response); 
 
         switch (response.data.message) {
             case "tiene refresh token":

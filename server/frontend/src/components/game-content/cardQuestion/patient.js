@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Form from "../../Form/Form";
 import useForm from "../../Form/useForm";
 import CompleteInput from "../../Input";
@@ -8,8 +8,8 @@ import "./patient.css";
 
 const CardQuestionPatientView = ({ infoContent }) => {
 
-    console.log(infoContent);
     const [ nextButton, setNextButton ] = useState(false);
+    const nextRef = useRef();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -18,9 +18,9 @@ const CardQuestionPatientView = ({ infoContent }) => {
 
     useEffect(() => {
         infoContent.socket.on('next', (data) => {
-            setNextButton(true);
+            infoContent.action(data.curQuestion);
         })
-    }, [infoContent.socket])
+    }, [infoContent.socket]);
 
     return (
         <div className="card-question-container">

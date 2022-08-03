@@ -33,7 +33,7 @@ USE sitefodi_results;
 
 CREATE TABLE card_answer_table (
 
-    id          INTEGER,
+    id          INTEGER AUTO_INCREMENT,
     idQuestion  INTEGER NOT NULL,
     idTherapy   INTEGER NOT NULL,
     correct     ENUM('yes', 'no') NOT NULL,

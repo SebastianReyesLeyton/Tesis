@@ -119,6 +119,22 @@ class TherapyService extends Service {
 
     }
 
+    async updateQuestionLocation ( res, obj ) {
+
+        // Define the default response
+        let ans = { message: 'actualizado' };
+        res.statusCode = SUCCESS;
+
+        let response = await this.repository.updateQuestionLocation(obj);
+
+        if ( response.affectedRows !== 1 ) {
+            ans.message = 'no se pudo actualizar';
+            res.statusCode = BAD_REQUEST;
+        }
+
+        return ans;
+    }
+
 }
 
 export default TherapyService;
