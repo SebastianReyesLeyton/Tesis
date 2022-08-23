@@ -24,6 +24,14 @@ const Topbar = (props) => {
         setShow(!show);
     }
 
+    const handleShowProfile = () => {
+        navigate('/show-profile');
+    }
+
+    const handleEditProfile = () => {
+        navigate('/edit-profile');
+    }
+
     const handleLogout = () => {
         dispatch(logout(navigate));
     }
@@ -44,11 +52,11 @@ const Topbar = (props) => {
                         {
                             props.user.rol !== "admin" &&
                             <>
-                                <li>
+                                <li onClick={handleShowProfile}>
                                     <FontAwesomeIcon icon={faEye} className="icon" />
                                     <span>Ver perfil</span>
                                 </li>
-                                <li>
+                                <li onClick={handleEditProfile}>
                                     <FontAwesomeIcon icon={faMarker} className="icon" />
                                     <span>Editar perfil</span>
                                 </li>

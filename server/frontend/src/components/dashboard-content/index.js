@@ -8,6 +8,9 @@ import ShowTestComponent from "./show-test";
 import QuestionFormComponent from "./questions";
 import TherapyComponent from "./therapy";
 import TherapistComponent from "./therapies";
+import ResultComponent from "./results";
+import ShowProfileComponent from "./show-profile";
+import UpdateProfileComponent from "./update-profile";
 
 const DashboardContentComponent = (props) => {
 
@@ -45,9 +48,20 @@ const DashboardContentComponent = (props) => {
         case "schedule-therapies":
             content = <TherapistComponent user={props.user} />
             break;
+        case "results":
+            content = <ResultComponent user={props.user} />
+            break;
+        case "show-profile":
+            content = <ShowProfileComponent user={props.user} />
+            break;
+        case "edit-profile":
+            content = <UpdateProfileComponent user={props.user} />
+            break;
         default:
             break;
     }
+
+    console.log(location.pathname);
 
     return (
         content

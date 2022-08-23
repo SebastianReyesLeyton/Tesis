@@ -18,7 +18,8 @@ export const DTO_PATIENTS_RESPONSE = {
     email: String(),
     docnum: String(),
     gender: String(),
-    active: String()
+    active: String(),
+    relation: Number()
 }
 
 /* MySQL DTOs */

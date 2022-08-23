@@ -5,6 +5,8 @@ import { Navigate, useNavigate, useParams, useLocation } from "react-router-dom"
 
 import GameContentComponent from "../../game-content";
 import { getNumberOfQuestion, getQuestion } from "../../../actions/test";
+import { updateQuestionLocation ,finishTherapy } from "../../../actions/therapy";
+import { storeResponse } from "../../../actions/results";
 
 import { resetGame } from "../../../reducers/game";
 
@@ -59,8 +61,9 @@ const GamePage = () => {
 
     console.log(curQuestion);
 
-    const handleSocketNext = () => {
+    const handleSocketNext = (data) => {
         socket.emit('next', { therapy: idTherapy, curQuestion: curQuestion });
+        dispatch(storeResponse(data, { idTherapy, qType: questionD.curQuestion.type, idQuestion: questionD.curQuestion.id }, navigate));
     }
 
     const handleNextQuestion = (cur = curQuestion) => {
@@ -71,10 +74,12 @@ const GamePage = () => {
                 // setCurQuestion(cur + 1);
                 // dispatch(getNumberOfQuestion(idTest, navigate));
                 // dispatch(getQuestion(idTest, cur + 1, navigate));
-                navigate(`/therapy/${idTherapy}/test/${idTest}/question/${cur + 1}`);
+                dispatch(updateQuestionLocation({idTherapy, currentQuestion: cur + 1}, navigate));
+                navigate(`/therapy/${idTherapy}/test/${idTest}/question/${cur + 1}`, {replace: true});
                 setLoad(true);
             } else {
                 dispatch(resetGame());
+                dispatch(finishTherapy(idTherapy));
                 navigate('/home');
             }
         }

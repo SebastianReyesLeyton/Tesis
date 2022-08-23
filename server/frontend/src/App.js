@@ -35,6 +35,11 @@ const App = () => {
                 <Route path='add-therapy' element={<DashboardPage />}/>
                 <Route path='schedule-therapies' element={<DashboardPage />}/>
                 <Route path='therapy/:idTherapy/test/:idTest/question/:currentQuestion' element={<GamePage />}/>
+
+                <Route path='/results' element={<DashboardPage />}/>
+                <Route path='/show-profile' element={<DashboardPage />}/>
+                <Route path='/edit-profile' element={<DashboardPage />}/>
+
                 <Route path='*' element={<PageNotFound />} />
             </Routes>
         </BrowserRouter>

@@ -99,7 +99,7 @@ CREATE TABLE words_question_table (
 CREATE TABLE cards_question_table (
 
     id              INTEGER,
-    patientTitle    VARCHAR(255) NOT NULL DEFAULT 'JUego de cartas',
+    patientTitle    VARCHAR(255) NOT NULL DEFAULT 'Juego de cartas',
     rounds          INTEGER NOT NULL DEFAULT 1 CHECK( rounds > 0 ),
     imgs            JSON NOT NULL,
     correctValue    INTEGER NOT NULL DEFAULT 1,

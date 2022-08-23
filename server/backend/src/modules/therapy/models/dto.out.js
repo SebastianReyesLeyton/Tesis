@@ -13,3 +13,16 @@ export const DTO_GET_NOT_FINISHED_THERAPIES = {
     state: String(),
     currentQuestion: Number()
 }
+
+export const DTO_GET_FINISHED_THERAPIES = {
+    id: Number(),
+    url: String(),
+    date: new Date(),
+    test: Number(),
+    currentQuestion: Number()
+}
+
+export const DTO_THERAPY_RESPONSE = {
+    id: Number(),
+    test: Number()
+}

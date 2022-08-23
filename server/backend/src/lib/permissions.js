@@ -124,6 +124,26 @@ const Permissions = ( type ) => {
                 return ans;
             }
             break;
+        case 'supervisor and therapist':
+            callback = (rol) => {
+
+                // Define the default value to return
+                let ans = undefined;
+
+                // Permissions
+                switch (rol) {
+                    case 'supervisor':
+                        break;
+                    case 'terapeuta':
+                        break;
+                    default:
+                        ans = { error: 'permisos denegados' };
+                        break;
+                }
+
+                return ans;
+            }
+            break;
         case 'therapist':
             callback = (rol) => {
 

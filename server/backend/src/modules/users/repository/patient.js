@@ -24,7 +24,7 @@ class PatientRepository extends UserRepository {
     }
 
     getPatients ( obj ) {
-        const ans = this.db.query('SELECT user_table.id AS id, fullname, email, docnum, gender, user_table.isActive AS isActive \
+        const ans = this.db.query('SELECT user_table.id AS id, fullname, email, docnum, gender, user_table.isActive AS isActive, relation_therapist_patient_table.id AS relation \
                                    FROM user_table INNER JOIN relation_therapist_patient_table \
                                    ON user_table.id = relation_therapist_patient_table.idPatient \
                                    INNER JOIN patient_table ON user_table.id = patient_table.id \

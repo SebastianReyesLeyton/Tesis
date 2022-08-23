@@ -267,7 +267,7 @@ class TestController extends Controller {
 
     getQuestionsByTest () {
 
-        const permission = Permissions('supervisor');
+        const permission = Permissions('supervisor and therapist');
 
         return async ( req, res ) => {
 

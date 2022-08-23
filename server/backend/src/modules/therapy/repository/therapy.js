@@ -22,11 +22,14 @@ class TherapyRepository extends Repository {
         return ans;
     }
 
-    getFinishedTherapies ({ rows, offset }) {
-        const ans = this.db.query("SELECT * FROM therapy_table WHERE stateT = 'finalizada' LIMIT ?, ?", [
+    getFinishedTherapies ({ rows, offset, idRelation }) {
+        const ans = (!Boolean(idRelation)) ? this.db.query("SELECT * FROM therapy_table WHERE stateT = 'finalizada'\
+                                   ORDER BY dateT DESC LIMIT ?, ?", [
             offset, 
             rows
-        ]);
+        ]) : 
+        this.db.query("SELECT * FROM therapy_table WHERE stateT = 'finalizada' AND idRelation = ? ORDER BY dateT DESC\
+                       LIMIT ?, ?", [ idRelation, offset, rows ]);
         return ans;
     }
 
@@ -53,6 +56,14 @@ class TherapyRepository extends Repository {
         ]);
         return ans;
     } 
+
+    finishTherapy ( obj ) {
+        const ans = this.db.query('UPDATE therapy_table SET stateT = ? WHERE id = ?', [
+            'finalizada',
+            obj.id
+        ]);
+        return ans;
+    }
 
 }
 

@@ -3,7 +3,7 @@ import Service from "../../../models/service";
 import PatientController from "../../users/controller/patient";
 import TherapyRepository from "../repository/therapy";
 import UserController from "../../users/controller/user";
-import { DTO_ADD_THERAPY, DTO_GET_NOT_FINISHED_THERAPIES } from "../models/dto.out";
+import { DTO_ADD_THERAPY, DTO_GET_NOT_FINISHED_THERAPIES, DTO_GET_FINISHED_THERAPIES } from "../models/dto.out";
 import ResponseOBJ from "../../../models/request";
 import { SUCCESS, BAD_REQUEST, INTERNAL_ERROR  } from "../../../lib/httpCodes";
 
@@ -119,6 +119,48 @@ class TherapyService extends Service {
 
     }
 
+    async getFinished ( res, obj ) {
+
+        // Define the default response
+        let ans = { message: 'encontrados' };
+        res.statusCode = SUCCESS;
+
+        let response = await this.repository.getFinishedTherapies(obj);
+
+        console.log(response);
+
+        response = response.map((item) => {
+            
+            try {
+
+                this.mapper.map( {}, DTO_GET_FINISHED_THERAPIES, (dto) => {
+                    
+                    
+                    dto.id = item.id;
+                    dto.url = item.urlTherapy;
+                    dto.date = item.dateT;
+                    dto.test = (item.idTest === null) ? -1 : item.idTest;
+                    dto.currentQuestion = item.questionLocation;
+
+                    console.log(dto);
+
+                    return dto;
+                });
+                
+            } catch (err) {
+                console.log('Error', err);
+            }
+            
+            return this.mapper.obj;
+
+        });
+
+        ans.therapies = response;
+
+        return ans;
+
+    }
+
     async updateQuestionLocation ( res, obj ) {
 
         // Define the default response
@@ -133,6 +175,41 @@ class TherapyService extends Service {
         }
 
         return ans;
+    }
+
+    async finishTherapy ( res, obj ) {
+        
+        // Define the default response
+        let ans = { message: 'actualizado' };
+        res.statusCode = SUCCESS;
+
+        let response = await this.repository.finishTherapy(obj);
+
+        if ( response.affectedRows !== 1 ) {
+            ans.message = 'no se pudo actualizar';
+            res.statusCode = BAD_REQUEST;
+        }
+
+        return ans;
+    }
+
+    async getTherapy( res, obj ) {
+
+        // Define the default response
+        let ans = { message: 'encontrado' };
+        res.statusCode = SUCCESS;
+
+        let response = await this.repository.get(obj);
+
+        if ( response.length !== 1 ) {
+            ans.message = 'no se encontró el valor buscado';
+            res.statusCode = BAD_REQUEST;
+        } else {
+            ans.therapy = response[0];
+        }
+
+        return ans;
+
     }
 
 }

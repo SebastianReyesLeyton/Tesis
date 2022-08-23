@@ -3,7 +3,8 @@ import {
     faUser, 
     faUserGroup,
     faCalendarCheck,
-    faCalendarDays
+    faCalendarDays,
+    faSquarePollVertical
 } from '@fortawesome/free-solid-svg-icons';
 
 export const TherapistOptions = {
@@ -29,6 +30,11 @@ export const TherapistOptions = {
             option: "Ver",
             icon: <FontAwesomeIcon icon={faCalendarDays} className="icon" />,
             link: "/schedule-therapies"
+        },
+        {
+            option: "Ver resultados",
+            icon: <FontAwesomeIcon icon={faSquarePollVertical} className="icon" />,
+            link: "/results"
         }
-    ]
+    ],
 }
