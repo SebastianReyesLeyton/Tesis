@@ -6,6 +6,6 @@ WORKDIR /usr/src/app
 # Install app dependencies
 COPY package.json ./
 
-COPY . .
+RUN npm install
 
-EXPOSE 3000
+COPY . .

@@ -19,7 +19,7 @@ services:
       - backend
       - database
     volumes:
-      - ./frontend:/usr/src/app
+      # - ./frontend:/usr/src/app
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     command: ["npm", "start"]
@@ -41,7 +41,7 @@ services:
     depends_on:
       - database
     volumes:
-      - ./backend/:/usr/src/app
+      # - ./backend/:/usr/src/app
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     command: ["npm", "run", "dev"]
