@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js  --verbose src/test --forceExit  --coverage --coverageDirectory=src/test/coverage",
     "dev": "NODE_OPTIONS='--es-module-specifier-resolution=node' nodemon src/index.js"
   },
   "repository": {
@@ -30,5 +30,8 @@
     "rand-token": "^1.0.1",
     "socket.io": "^4.5.1",
     "utf8": "^3.0.0"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0"
   }
 }
